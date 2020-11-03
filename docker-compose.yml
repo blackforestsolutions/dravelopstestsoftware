@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  otp:
+    image: blackforestsolutions/dravelopsopentripplanner:bw-dev-v0.1.0
+    ports:
+      - 8089:8089
+      volumes:
+        - ./graphs:/var/otp/graphs
+      environment:
+        - JAVA_OPTIONS=-Xmx2G
+      command:
+        [
+            '--server',
+            '--analyst',
+            '--autoScan',
+            '--insecure',
+            '--verbose',
+            '--port',
+            '8089',
+            '--securePort',
+            '8090'
+        ]
+
+  otpmapper:
+    image: blackforestsolutions/dravelopsotpmapperservice:bw-dev-v0.2.0
+    ports:
+      - 8084:8084
+
+  polygon:
+    image: blackforestsolutions/dravelopspolygonservice:bw-dev-v1.1.0
+    ports:
+      - 8083:8083
+
+  stargate:
+    image: blackforestsolutions/dravelopsstargateservice:bw-dev-v0.3.0
+    ports:
+      - 8085:8085
+
+
+
+
+
