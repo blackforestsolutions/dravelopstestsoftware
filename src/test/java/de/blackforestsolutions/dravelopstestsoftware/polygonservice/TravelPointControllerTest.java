@@ -2,6 +2,7 @@ package de.blackforestsolutions.dravelopstestsoftware.polygonservice;
 
 import de.blackforestsolutions.dravelopsdatamodel.TravelPoint;
 import de.blackforestsolutions.dravelopsdatamodel.util.ApiToken;
+import de.blackforestsolutions.dravelopstestsoftware.configuration.TravelPointConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -9,17 +10,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.function.Consumer;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getTravelPointAssertions;
 
-import static de.blackforestsolutions.dravelopsdatamodel.testutil.TestUtils.retrieveJsonToPojo;
-import static de.blackforestsolutions.dravelopsdatamodel.testutil.TestUtils.toJson;
-import static org.assertj.core.api.Assertions.assertThat;
-
-@Import(TravelPointControllerConfiguration.class)
+@Import(TravelPointConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 public class TravelPointControllerTest {
@@ -28,28 +26,31 @@ public class TravelPointControllerTest {
     private String travelPointControllerUrl;
 
     @Autowired
-    private ApiToken.ApiTokenBuilder polygonApiToken;
+    private ApiToken.ApiTokenBuilder travelPointApiToken;
+
+    @Autowired
+    private ExchangeStrategies exchangeStrategies;
 
 
     @Test
     void test_retrievePeliasTravelPoints_with_correct_apiToken_returns_travelPoints() {
-        ApiToken testData = polygonApiToken.build();
+        ApiToken testData = travelPointApiToken.build();
 
-        Flux<String> result = retrievePeliasTravelPoints(testData)
+        Flux<TravelPoint> result = retrievePeliasTravelPoints(testData)
                 .expectStatus()
                 .isOk()
-                .returnResult(String.class)
+                .returnResult(TravelPoint.class)
                 .getResponseBody();
 
         StepVerifier.create(result)
                 .assertNext(getTravelPointAssertions())
-                .thenConsumeWhile(travelPointJson -> true, getTravelPointAssertions())
+                .thenConsumeWhile(travelPoint -> true, getTravelPointAssertions())
                 .verifyComplete();
     }
 
     @Test
     void test_retrievePeliasTravelPoints_with_incorrect_apiToken_returns_zero_travelPoints() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(polygonApiToken);
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(travelPointApiToken);
         testData.setDeparture("No TravelPoint is available in pelias for this string");
 
         Flux<String> result = retrievePeliasTravelPoints(testData.build())
@@ -67,22 +68,11 @@ public class TravelPointControllerTest {
         return WebTestClient
                 .bindToServer()
                 .baseUrl(travelPointControllerUrl)
+                .exchangeStrategies(exchangeStrategies)
                 .build()
                 .post()
-                .body(Mono.just(toJson(requestToken)), String.class)
+                .body(Mono.just(requestToken), ApiToken.class)
                 .accept(MediaType.TEXT_EVENT_STREAM)
                 .exchange();
-    }
-
-    private Consumer<String> getTravelPointAssertions() {
-        return travelPointJson -> {
-            TravelPoint travelPoint = retrieveJsonToPojo(travelPointJson, TravelPoint.class);
-            assertThat(travelPoint).isNotNull();
-            assertThat(travelPoint.getName()).isNotEmpty();
-            assertThat(travelPoint.getPoint()).isNotNull();
-            assertThat(travelPoint.getPlatform()).isEmpty();
-            assertThat(travelPoint.getArrivalTime()).isNull();
-            assertThat(travelPoint.getDepartureTime()).isNull();
-        };
     }
 }

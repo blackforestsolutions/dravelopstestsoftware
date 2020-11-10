@@ -2,6 +2,7 @@ package de.blackforestsolutions.dravelopstestsoftware.otpmapperservice;
 
 import de.blackforestsolutions.dravelopsdatamodel.Journey;
 import de.blackforestsolutions.dravelopsdatamodel.util.ApiToken;
+import de.blackforestsolutions.dravelopstestsoftware.configuration.JourneyConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -10,17 +11,17 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.geo.Point;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.function.Consumer;
+import java.time.ZonedDateTime;
 
-import static de.blackforestsolutions.dravelopsdatamodel.testutil.TestUtils.retrieveJsonToPojo;
-import static de.blackforestsolutions.dravelopsdatamodel.testutil.TestUtils.toJson;
-import static org.assertj.core.api.Assertions.assertThat;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getArrivalAndDepartureLegAssertions;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getLegPropertiesAssertions;
 
-@Import(JourneyControllerConfiguration.class)
+@Import(JourneyConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 public class JourneyControllerTest {
@@ -29,51 +30,54 @@ public class JourneyControllerTest {
     private String journeyControllerUrl;
 
     @Autowired
-    private ApiToken.ApiTokenBuilder otpMapperApiToken;
+    private ApiToken.ApiTokenBuilder journeyApiToken;
 
+    @Autowired
+    private ExchangeStrategies exchangeStrategies;
 
     @Test
     void test_retrieveOpenTripPlannerJourneys_with_correct_apiToken_return_journeys_with_correct_leg_properties() {
-        ApiToken testData = otpMapperApiToken.build();
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(journeyApiToken);
+        testData.setDateTime(ZonedDateTime.now().plusDays(1L).withHour(12).withMinute(0).withSecond(0));
 
-        Flux<String> result = retrieveOpenTripPlannerJourneys(testData)
+        Flux<Journey> result = retrieveOpenTripPlannerJourneys(testData.build())
                 .expectStatus()
                 .isOk()
-                .returnResult(String.class)
+                .returnResult(Journey.class)
                 .getResponseBody();
 
         StepVerifier.create(result)
                 .assertNext(getLegPropertiesAssertions())
-                .thenConsumeWhile(journeyJson -> true, getLegPropertiesAssertions())
+                .thenConsumeWhile(journey -> true, getLegPropertiesAssertions())
                 .verifyComplete();
     }
 
     @Test
     void test_retrieveOpenTripPlannerJourneys_with_correct_apiToken_return_journeys_with_correct_leg_properties_for_departure_and_arrival() {
-        ApiToken testData = otpMapperApiToken.build();
+        ApiToken testData = journeyApiToken.build();
 
-        Flux<String> result = retrieveOpenTripPlannerJourneys(testData)
+        Flux<Journey> result = retrieveOpenTripPlannerJourneys(testData)
                 .expectStatus()
                 .isOk()
-                .returnResult(String.class)
+                .returnResult(Journey.class)
                 .getResponseBody();
 
         StepVerifier.create(result)
                 .assertNext(getArrivalAndDepartureLegAssertions())
-                .thenConsumeWhile(journeyJson -> true, getArrivalAndDepartureLegAssertions())
+                .thenConsumeWhile(journey -> true, getArrivalAndDepartureLegAssertions())
                 .verifyComplete();
     }
 
     @Test
     void test_retrieveOpenTripPlannerJourneys_with_incorrect_apiToken_returns_zero_journeys() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(otpMapperApiToken);
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(journeyApiToken);
         testData.setArrivalCoordinate(new Point(0.0d, 0.0d));
         testData.setDepartureCoordinate(new Point(0.0d, 0.0d));
 
-        Flux<String> result = retrieveOpenTripPlannerJourneys(testData.build())
+        Flux<Journey> result = retrieveOpenTripPlannerJourneys(testData.build())
                 .expectStatus()
                 .isOk()
-                .returnResult(String.class)
+                .returnResult(Journey.class)
                 .getResponseBody();
 
         StepVerifier.create(result)
@@ -81,51 +85,14 @@ public class JourneyControllerTest {
                 .verifyComplete();
     }
 
-    private Consumer<String> getLegPropertiesAssertions() {
-        return journeyJson -> {
-            Journey journey = retrieveJsonToPojo(journeyJson, Journey.class);
-            assertThat(journey.getLegs())
-                    .allMatch(leg -> leg.getDeparture() != null)
-                    .allMatch(leg -> !leg.getDeparture().getName().isEmpty())
-                    .allMatch(leg -> leg.getDeparture().getPoint() != null)
-                    .allMatch(leg -> leg.getArrival() != null)
-                    .allMatch(leg -> !leg.getArrival().getName().isEmpty())
-                    .allMatch(leg -> leg.getArrival().getPoint() != null);
-            assertThat(journey.getLegs())
-                    .first()
-                    .matches(leg -> leg.getDeparture().getArrivalTime() == null);
-            assertThat(journey.getLegs())
-                    .last()
-                    .matches(leg -> leg.getArrival().getDepartureTime() == null);
-        };
-    }
-
-    private Consumer<String> getArrivalAndDepartureLegAssertions() {
-        return journeyJson -> {
-            Journey journey = retrieveJsonToPojo(journeyJson, Journey.class);
-            assertThat(journey.getLegs())
-                    .allMatch(leg -> leg.getDeparture() != null)
-                    .allMatch(leg -> !leg.getDeparture().getName().isEmpty())
-                    .allMatch(leg -> leg.getDeparture().getPoint() != null)
-                    .allMatch(leg -> leg.getArrival() != null)
-                    .allMatch(leg -> !leg.getArrival().getName().isEmpty())
-                    .allMatch(leg -> leg.getArrival().getPoint() != null);
-            assertThat(journey.getLegs())
-                    .first()
-                    .matches(leg -> leg.getDeparture().getArrivalTime() == null);
-            assertThat(journey.getLegs())
-                    .last()
-                    .matches(leg -> leg.getArrival().getDepartureTime() == null);
-        };
-    }
-
     private WebTestClient.ResponseSpec retrieveOpenTripPlannerJourneys(ApiToken requestToken) {
         return WebTestClient
                 .bindToServer()
                 .baseUrl(journeyControllerUrl)
+                .exchangeStrategies(exchangeStrategies)
                 .build()
                 .post()
-                .body(Mono.just(toJson(requestToken)), String.class)
+                .body(Mono.just(requestToken), ApiToken.class)
                 .accept(MediaType.TEXT_EVENT_STREAM)
                 .exchange();
     }

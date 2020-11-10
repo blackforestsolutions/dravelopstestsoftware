@@ -1,0 +1,54 @@
+query GetJourneys($departureLatitude: Float!, $departureLongitude: Float!, $arrivalLatitude: Float!, $arrivalLongitude: Float!, $dateTime: String!, $isArrivalDateTime: Boolean!, $optimize: Optimization, $language: String!) {
+    getJourneysBy(departureLatitude: $departureLatitude, departureLongitude: $departureLongitude, arrivalLatitude: $arrivalLatitude, arrivalLongitude: $arrivalLongitude, dateTime: $dateTime, isArrivalDateTime: $isArrivalDateTime, optimize: $optimize, language: $language) {
+        legs {
+            departure {
+                name
+                point {
+                    x
+                    y
+                }
+                arrivalTime
+                departureTime
+                platform
+            }
+            arrival {
+                name
+                point {
+                    x
+                    y
+                }
+                arrivalTime
+                departureTime
+                platform
+            }
+            delayInMinutes
+            distanceInKilometers
+            vehicleType
+            waypoints {
+                x
+                y
+            }
+            travelProvider {
+                name
+                url
+            }
+            vehicleNumber
+            vehicleName
+            intermediateStops {
+                name
+                point {
+                    x
+                    y
+                }
+                arrivalTime
+                departureTime
+                platform
+            }
+        }
+        prices {
+            priceType
+            currencyCode
+            smallestCurrencyValue
+        }
+    }
+}

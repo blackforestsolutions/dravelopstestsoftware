@@ -1,4 +1,4 @@
-package de.blackforestsolutions.dravelopstestsoftware.polygonservice;
+package de.blackforestsolutions.dravelopstestsoftware.configuration;
 
 import de.blackforestsolutions.dravelopsdatamodel.util.ApiToken;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,14 +7,14 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
 @TestConfiguration
-public class TravelPointControllerConfiguration {
+public class TravelPointConfiguration {
 
     /**
-     * This section configures the polygon request token from application-int-<customer>.properties file
+     * This section configures the travelPoint token from application-int-<customer>.properties file
      */
     @Bean
-    @ConfigurationProperties(prefix = "test.apitokens.polygon")
-    public ApiToken.ApiTokenBuilder polygonApiToken() {
+    @ConfigurationProperties(prefix = "test.apitokens[0]")
+    public ApiToken.ApiTokenBuilder travelPointApiToken() {
         return new ApiToken.ApiTokenBuilder();
     }
 
@@ -41,5 +41,4 @@ public class TravelPointControllerConfiguration {
                 .concat("/")
                 .concat(polygonTravelPointControllerPath);
     }
-
 }
