@@ -1,0 +1,10 @@
+query GetTravelPoints($text: String!, $language: String!) {
+    getTravelPointsBy(text: $text, language: $language) {
+        name
+        point {
+            x
+            y
+        }
+    }
+}
+
