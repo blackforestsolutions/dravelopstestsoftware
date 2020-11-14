@@ -7,8 +7,10 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @SpringBootConfiguration
@@ -43,8 +45,8 @@ public class WebClientConfiguration {
         return WebClient.builder()
                 .exchangeStrategies(exchangeStrategies())
                 .baseUrl(buildBaseUrl())
-//                .filter(logRequest())
-//                .filter(logResponse())
+                .filter(logRequest())
+                .filter(logResponse())
                 .build();
     }
 
@@ -58,20 +60,20 @@ public class WebClientConfiguration {
                 .concat(path);
     }
 
-//    private ExchangeFilterFunction logRequest() {
-//        return (clientRequest, next) -> {
-//            log.info("Request: {} {}", clientRequest.method(), clientRequest.url());
-//            clientRequest.headers()
-//                    .forEach((name, values) -> values.forEach(value -> log.info("{}={}", name, value)));
-//            log.info("Body: ", clientRequest.body());
-//            return next.exchange(clientRequest);
-//        };
-//    }
+    private ExchangeFilterFunction logRequest() {
+        return (clientRequest, next) -> {
+            log.info("Request: {} {}", clientRequest.method(), clientRequest.url());
+            clientRequest.headers()
+                    .forEach((name, values) -> values.forEach(value -> log.info("{}={}", name, value)));
+            log.info("Body: ", clientRequest.body());
+            return next.exchange(clientRequest);
+        };
+    }
 
-//    private ExchangeFilterFunction logResponse() {
-//        return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-//            log.info("Response: {}", clientResponse.headers().asHttpHeaders().get("property-header"));
-//            return Mono.just(clientResponse);
-//        });
-//    }
+    private ExchangeFilterFunction logResponse() {
+        return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
+            log.info("Response: {}", clientResponse.headers().asHttpHeaders().get("property-header"));
+            return Mono.just(clientResponse);
+        });
+    }
 }
