@@ -1,7 +1,7 @@
 package de.blackforestsolutions.dravelopstestsoftware.stargateservice;
 
 import de.blackforestsolutions.dravelopsdatamodel.TravelPoint;
-import de.blackforestsolutions.dravelopsdatamodel.util.ApiToken;
+import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
 import de.blackforestsolutions.dravelopsdatamodel.util.DravelOpsJsonMapper;
 import de.blackforestsolutions.dravelopstestsoftware.configuration.TravelPointConfiguration;
 import graphql.kickstart.spring.webclient.boot.GraphQLWebClient;
