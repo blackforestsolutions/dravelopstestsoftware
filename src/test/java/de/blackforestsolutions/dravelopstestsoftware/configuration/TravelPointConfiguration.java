@@ -14,14 +14,10 @@ public class TravelPointConfiguration {
     /**
      * This section configures the travelPoint token from application-int-<customer>.properties file
      */
-    @Value("${test.apitokens[0].language}")
-    private Locale language;
-
     @Bean
     @ConfigurationProperties(prefix = "test.apitokens[0]")
     public ApiToken.ApiTokenBuilder travelPointApiToken() {
-        return new ApiToken.ApiTokenBuilder()
-                .setLanguage(language);
+        return new ApiToken.ApiTokenBuilder();
     }
 
     /**

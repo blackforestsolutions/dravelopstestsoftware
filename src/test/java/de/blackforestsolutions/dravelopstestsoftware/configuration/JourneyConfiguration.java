@@ -15,8 +15,6 @@ public class JourneyConfiguration {
     /**
      * This section configures the journey token from application-int-<customer>.properties file
      */
-    @Value("${test.apitokens[0].language}")
-    private Locale language;
     @Value("${test.apitokens[0].departureCoordinateLongitude}")
     private Double departureCoordinateLongitude;
     @Value("${test.apitokens[0].departureCoordinateLatitude}")
@@ -30,7 +28,6 @@ public class JourneyConfiguration {
     @ConfigurationProperties(prefix = "test.apitokens[0]")
     public ApiToken.ApiTokenBuilder journeyApiToken() {
         return new ApiToken.ApiTokenBuilder()
-                .setLanguage(language)
                 .setDepartureCoordinate(new Point(departureCoordinateLongitude, departureCoordinateLatitude))
                 .setArrivalCoordinate(new Point(arrivalCoordinateLongitude, arrivalCoordinateLatitude));
     }
