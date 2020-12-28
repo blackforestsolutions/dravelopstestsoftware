@@ -6,16 +6,22 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Locale;
+
 @TestConfiguration
 public class TravelPointConfiguration {
 
     /**
      * This section configures the travelPoint token from application-int-<customer>.properties file
      */
+    @Value("${test.apitokens[0].language}")
+    private Locale language;
+
     @Bean
     @ConfigurationProperties(prefix = "test.apitokens[0]")
     public ApiToken.ApiTokenBuilder travelPointApiToken() {
-        return new ApiToken.ApiTokenBuilder();
+        return new ApiToken.ApiTokenBuilder()
+                .setLanguage(language);
     }
 
     /**
