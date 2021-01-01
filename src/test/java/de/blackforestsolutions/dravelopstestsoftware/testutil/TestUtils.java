@@ -29,7 +29,6 @@ public class TestUtils {
 
     public static Consumer<Journey> getArrivalAndDepartureLegAssertions() {
         return journey -> {
-            assertThat(journey.getLanguage().getLanguage().length()).isEqualTo(2);
             assertThat(journey.getLegs())
                     .allMatch(leg -> leg.getDeparture() != null)
                     .allMatch(leg -> !leg.getDeparture().getName().isEmpty())

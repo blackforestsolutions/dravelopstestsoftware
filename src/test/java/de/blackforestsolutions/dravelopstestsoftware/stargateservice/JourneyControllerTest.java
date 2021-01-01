@@ -1,4 +1,4 @@
-package de.blackforestsolutions.dravelopstestsoftware.otpmapperservice;
+package de.blackforestsolutions.dravelopstestsoftware.stargateservice;
 
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
 import de.blackforestsolutions.dravelopsdatamodel.Journey;
@@ -27,7 +27,7 @@ import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.g
 public class JourneyControllerTest {
 
     @Autowired
-    private String journeyOtpMapperUrl;
+    private String journeyStargateUrl;
 
     @Autowired
     private ApiToken.ApiTokenBuilder journeyApiToken;
@@ -36,11 +36,11 @@ public class JourneyControllerTest {
     private ExchangeStrategies exchangeStrategies;
 
     @Test
-    void test_retrieveOpenTripPlannerJourneys_with_correct_apiToken_return_journeys_with_correct_leg_properties() {
+    void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties() {
         ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(journeyApiToken);
         testData.setDateTime(ZonedDateTime.now().plusDays(1L).withHour(12).withMinute(0).withSecond(0));
 
-        Flux<Journey> result = retrieveOpenTripPlannerJourneys(testData.build())
+        Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()
                 .isOk()
                 .returnResult(Journey.class)
@@ -53,10 +53,10 @@ public class JourneyControllerTest {
     }
 
     @Test
-    void test_retrieveOpenTripPlannerJourneys_with_correct_apiToken_return_journeys_with_correct_leg_properties_for_departure_and_arrival() {
-        ApiToken testData = journeyApiToken.build();
+    void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties_for_departure_and_arrival() {
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(journeyApiToken);
 
-        Flux<Journey> result = retrieveOpenTripPlannerJourneys(testData)
+        Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()
                 .isOk()
                 .returnResult(Journey.class)
@@ -69,12 +69,12 @@ public class JourneyControllerTest {
     }
 
     @Test
-    void test_retrieveOpenTripPlannerJourneys_with_incorrect_apiToken_returns_zero_journeys() {
+    void test_getJourneysBy_incorrect_apiToken_returns_zero_journeys() {
         ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(journeyApiToken);
         testData.setArrivalCoordinate(new Point(0.0d, 0.0d));
         testData.setDepartureCoordinate(new Point(0.0d, 0.0d));
 
-        Flux<Journey> result = retrieveOpenTripPlannerJourneys(testData.build())
+        Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()
                 .isOk()
                 .returnResult(Journey.class)
@@ -85,16 +85,15 @@ public class JourneyControllerTest {
                 .verifyComplete();
     }
 
-    private WebTestClient.ResponseSpec retrieveOpenTripPlannerJourneys(ApiToken requestToken) {
+    private WebTestClient.ResponseSpec getJourneysBy(ApiToken.ApiTokenBuilder requestToken) {
         return WebTestClient
                 .bindToServer()
-                .baseUrl(journeyOtpMapperUrl)
+                .baseUrl(journeyStargateUrl)
                 .exchangeStrategies(exchangeStrategies)
                 .build()
                 .post()
-                .body(Mono.just(requestToken), ApiToken.class)
+                .body(Mono.just(requestToken), ApiToken.ApiTokenBuilder.class)
                 .accept(MediaType.TEXT_EVENT_STREAM)
                 .exchange();
     }
-
 }
