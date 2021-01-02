@@ -2,13 +2,13 @@ package de.blackforestsolutions.dravelopstestsoftware.stargateservice;
 
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
 import de.blackforestsolutions.dravelopsdatamodel.Journey;
+import de.blackforestsolutions.dravelopsdatamodel.Point;
 import de.blackforestsolutions.dravelopstestsoftware.configuration.JourneyConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.geo.Point;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
@@ -71,8 +71,8 @@ public class JourneyControllerTest {
     @Test
     void test_getJourneysBy_incorrect_apiToken_returns_zero_journeys() {
         ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(journeyApiToken);
-        testData.setArrivalCoordinate(new Point(0.0d, 0.0d));
-        testData.setDepartureCoordinate(new Point(0.0d, 0.0d));
+        testData.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
+        testData.setDepartureCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
 
         Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()

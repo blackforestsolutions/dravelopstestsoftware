@@ -2,6 +2,7 @@ package de.blackforestsolutions.dravelopstestsoftware.stargateservice;
 
 import de.blackforestsolutions.dravelopsdatamodel.Journey;
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
+import de.blackforestsolutions.dravelopsdatamodel.Point;
 import de.blackforestsolutions.dravelopsdatamodel.util.DravelOpsJsonMapper;
 import de.blackforestsolutions.dravelopstestsoftware.configuration.JourneyConfiguration;
 import graphql.kickstart.spring.webclient.boot.GraphQLWebClient;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.geo.Point;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
@@ -63,8 +63,8 @@ public class JourneyResolverTest {
     @Test
     void test_getJourneysBy_max_parameters_graphql_file_and_incorrect_apiToken_returns_zero_journeys() {
         ApiToken.ApiTokenBuilder journeyApiToken = new ApiToken.ApiTokenBuilder(this.journeyApiToken);
-        journeyApiToken.setDepartureCoordinate(new Point(0.0d, 0.0d));
-        journeyApiToken.setArrivalCoordinate(new Point(0.0d, 0.0d));
+        journeyApiToken.setDepartureCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
+        journeyApiToken.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
 
         Flux<Journey> result = getJourneysBy(journeyApiToken.build());
 

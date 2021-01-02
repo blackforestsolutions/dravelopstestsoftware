@@ -1,11 +1,11 @@
 package de.blackforestsolutions.dravelopstestsoftware.configuration;
 
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
+import de.blackforestsolutions.dravelopsdatamodel.Point;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.geo.Point;
 
 @TestConfiguration
 public class JourneyConfiguration {
@@ -26,8 +26,8 @@ public class JourneyConfiguration {
     @ConfigurationProperties(prefix = "test.apitokens[0]")
     public ApiToken.ApiTokenBuilder journeyApiToken() {
         return new ApiToken.ApiTokenBuilder()
-                .setDepartureCoordinate(new Point(departureCoordinateLongitude, departureCoordinateLatitude))
-                .setArrivalCoordinate(new Point(arrivalCoordinateLongitude, arrivalCoordinateLatitude));
+                .setDepartureCoordinate(new Point.PointBuilder(departureCoordinateLongitude, departureCoordinateLatitude).build())
+                .setArrivalCoordinate(new Point.PointBuilder(arrivalCoordinateLongitude, arrivalCoordinateLatitude).build());
     }
 
     /**
