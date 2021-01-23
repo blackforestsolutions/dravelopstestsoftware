@@ -1,4 +1,4 @@
-package de.blackforestsolutions.dravelopstestsoftware.otpmapperservice;
+package de.blackforestsolutions.dravelopstestsoftware.routepersistenceservice;
 
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
 import de.blackforestsolutions.dravelopsdatamodel.Journey;
@@ -27,7 +27,7 @@ import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.g
 public class JourneyControllerTest {
 
     @Autowired
-    private String journeyOtpMapperUrl;
+    private String journeyRoutePersistenceUrl;
 
     @Autowired
     private ApiToken.ApiTokenBuilder journeyApiToken;
@@ -88,7 +88,7 @@ public class JourneyControllerTest {
     private WebTestClient.ResponseSpec retrieveOpenTripPlannerJourneys(ApiToken requestToken) {
         return WebTestClient
                 .bindToServer()
-                .baseUrl(journeyOtpMapperUrl)
+                .baseUrl(journeyRoutePersistenceUrl)
                 .exchangeStrategies(exchangeStrategies)
                 .build()
                 .post()
