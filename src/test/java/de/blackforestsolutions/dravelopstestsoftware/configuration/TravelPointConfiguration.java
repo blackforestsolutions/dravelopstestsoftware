@@ -19,7 +19,7 @@ public class TravelPointConfiguration {
     }
 
     /**
-     * This section configures the baseUrl for different stages like dev, prod etc.
+     * This section configures the baseUrl for the polygonservice.
      */
     @Value("${polygon.protocol}")
     private String polygonProtocol;
@@ -31,7 +31,7 @@ public class TravelPointConfiguration {
     private String polygonTravelPointControllerPath;
 
     @Bean
-    public String travelPointControllerUrl() {
+    public String travelPointPolygonUrl() {
         return ""
                 .concat(polygonProtocol)
                 .concat("://")
@@ -41,4 +41,30 @@ public class TravelPointConfiguration {
                 .concat("/")
                 .concat(polygonTravelPointControllerPath);
     }
+
+
+    /**
+     * This section configures the baseUrl for the travelpointsimporter
+     */
+    @Value("${travelpointsimporter.protocol}")
+    private String travelPointsImporterProtocol;
+    @Value("${travelpointsimporter.host}")
+    private String travelPointsImporterHost;
+    @Value("${travelpointsimporter.port}")
+    private String travelPointsImporterPort;
+    @Value("${travelpointsimporter.travelpoint.controller.path}")
+    private String travelPointsImporterTravelPointControllerPath;
+
+    @Bean
+    public String travelPointsImporterUrl() {
+        return ""
+                .concat(travelPointsImporterProtocol)
+                .concat("://")
+                .concat(travelPointsImporterHost)
+                .concat(":")
+                .concat(travelPointsImporterPort)
+                .concat("/")
+                .concat(travelPointsImporterTravelPointControllerPath);
+    }
+
 }
