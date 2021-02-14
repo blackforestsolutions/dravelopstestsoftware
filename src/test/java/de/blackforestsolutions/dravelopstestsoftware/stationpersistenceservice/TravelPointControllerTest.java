@@ -1,4 +1,4 @@
-package de.blackforestsolutions.dravelopstestsoftware.travelpointsimporterservice;
+package de.blackforestsolutions.dravelopstestsoftware.stationpersistenceservice;
 
 import de.blackforestsolutions.dravelopsdatamodel.TravelPoint;
 import de.blackforestsolutions.dravelopstestsoftware.configuration.TravelPointConfiguration;
@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TravelPointControllerTest {
 
     @Autowired
-    private String travelPointsImporterUrl;
+    private String stationsPersistenceUrl;
 
     @Autowired
     private ExchangeStrategies exchangeStrategies;
@@ -46,7 +46,7 @@ public class TravelPointControllerTest {
     private WebTestClient.ResponseSpec getAllTravelPoints() {
         return WebTestClient
                 .bindToServer()
-                .baseUrl(travelPointsImporterUrl)
+                .baseUrl(stationsPersistenceUrl)
                 .exchangeStrategies(exchangeStrategies)
                 .build()
                 .get()

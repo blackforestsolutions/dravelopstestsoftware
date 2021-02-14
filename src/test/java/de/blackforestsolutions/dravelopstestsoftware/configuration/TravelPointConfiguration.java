@@ -44,27 +44,27 @@ public class TravelPointConfiguration {
 
 
     /**
-     * This section configures the baseUrl for the travelpointsimporter
+     * This section configures the baseUrl for the stationPersistenceApi
      */
-    @Value("${travelpointsimporter.protocol}")
-    private String travelPointsImporterProtocol;
-    @Value("${travelpointsimporter.host}")
-    private String travelPointsImporterHost;
-    @Value("${travelpointsimporter.port}")
-    private String travelPointsImporterPort;
-    @Value("${travelpointsimporter.travelpoint.controller.path}")
-    private String travelPointsImporterTravelPointControllerPath;
+    @Value("${stationpersistence.protocol}")
+    private String stationPersistenceProtocol;
+    @Value("${stationpersistence.host}")
+    private String stationsPersistenceHost;
+    @Value("${stationpersistence.port}")
+    private String stationsPersistencePort;
+    @Value("${stationpersistence.travelpoint.controller.path}")
+    private String stationsPersistenceControllerPath;
 
     @Bean
-    public String travelPointsImporterUrl() {
+    public String stationsPersistenceUrl() {
         return ""
-                .concat(travelPointsImporterProtocol)
+                .concat(stationPersistenceProtocol)
                 .concat("://")
-                .concat(travelPointsImporterHost)
+                .concat(stationsPersistenceHost)
                 .concat(":")
-                .concat(travelPointsImporterPort)
+                .concat(stationsPersistencePort)
                 .concat("/")
-                .concat(travelPointsImporterTravelPointControllerPath);
+                .concat(stationsPersistenceControllerPath);
     }
 
 }
