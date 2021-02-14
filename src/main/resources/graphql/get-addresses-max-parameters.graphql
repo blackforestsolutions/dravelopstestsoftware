@@ -1,0 +1,10 @@
+query GetAddresses($text: String!, $language: String!) {
+    getAddressesBy(text: $text, language: $language) {
+        name
+        point {
+            x
+            y
+        }
+    }
+}
+

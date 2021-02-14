@@ -15,7 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getTravelPointAssertions;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getAddressesAssertions;
 
 @Import(TravelPointConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,8 +43,8 @@ public class TravelPointControllerTest {
                 .getResponseBody();
 
         StepVerifier.create(result)
-                .assertNext(getTravelPointAssertions())
-                .thenConsumeWhile(travelPoint -> true, getTravelPointAssertions())
+                .assertNext(getAddressesAssertions())
+                .thenConsumeWhile(travelPoint -> true, getAddressesAssertions())
                 .verifyComplete();
     }
 

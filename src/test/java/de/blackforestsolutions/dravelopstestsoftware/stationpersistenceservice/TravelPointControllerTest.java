@@ -13,9 +13,7 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.util.function.Consumer;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getAllStationsAssertions;
 
 @Import(TravelPointConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,21 +27,21 @@ public class TravelPointControllerTest {
     private ExchangeStrategies exchangeStrategies;
 
     @Test
-    void test_getAllTravelPoints_() {
+    void test_getAllStations_returns_travelPoints() {
 
-        Flux<TravelPoint> result = getAllTravelPoints()
+        Flux<TravelPoint> result = getAllStations()
                 .expectStatus()
                 .isOk()
                 .returnResult(TravelPoint.class)
                 .getResponseBody();
 
         StepVerifier.create(result)
-                .assertNext(getAllTravelPointAssertions())
-                .thenConsumeWhile(travelPoint -> true, getAllTravelPointAssertions())
+                .assertNext(getAllStationsAssertions())
+                .thenConsumeWhile(travelPoint -> true, getAllStationsAssertions())
                 .verifyComplete();
     }
 
-    private WebTestClient.ResponseSpec getAllTravelPoints() {
+    private WebTestClient.ResponseSpec getAllStations() {
         return WebTestClient
                 .bindToServer()
                 .baseUrl(stationsPersistenceUrl)
@@ -52,15 +50,5 @@ public class TravelPointControllerTest {
                 .get()
                 .accept(MediaType.TEXT_EVENT_STREAM)
                 .exchange();
-    }
-
-    private static Consumer<TravelPoint> getAllTravelPointAssertions() {
-        return travelPoint -> {
-            assertThat(travelPoint.getName()).isNotEmpty();
-            assertThat(travelPoint.getPoint()).isNotNull();
-            assertThat(travelPoint.getArrivalTime()).isNull();
-            assertThat(travelPoint.getDepartureTime()).isNull();
-            assertThat(travelPoint.getPlatform()).isNotNull();
-        };
     }
 }
