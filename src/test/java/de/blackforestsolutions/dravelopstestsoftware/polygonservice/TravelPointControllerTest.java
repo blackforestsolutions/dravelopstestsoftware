@@ -1,7 +1,7 @@
 package de.blackforestsolutions.dravelopstestsoftware.polygonservice;
 
-import de.blackforestsolutions.dravelopsdatamodel.TravelPoint;
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
+import de.blackforestsolutions.dravelopsdatamodel.TravelPoint;
 import de.blackforestsolutions.dravelopstestsoftware.configuration.TravelPointConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getTravelPointAssertions;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getAddressesAssertions;
 
 @Import(TravelPointConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -23,7 +23,7 @@ import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.g
 public class TravelPointControllerTest {
 
     @Autowired
-    private String travelPointControllerUrl;
+    private String travelPointPolygonUrl;
 
     @Autowired
     private ApiToken.ApiTokenBuilder travelPointApiToken;
@@ -43,8 +43,8 @@ public class TravelPointControllerTest {
                 .getResponseBody();
 
         StepVerifier.create(result)
-                .assertNext(getTravelPointAssertions())
-                .thenConsumeWhile(travelPoint -> true, getTravelPointAssertions())
+                .assertNext(getAddressesAssertions())
+                .thenConsumeWhile(travelPoint -> true, getAddressesAssertions())
                 .verifyComplete();
     }
 
@@ -67,7 +67,7 @@ public class TravelPointControllerTest {
     private WebTestClient.ResponseSpec retrievePeliasTravelPoints(ApiToken requestToken) {
         return WebTestClient
                 .bindToServer()
-                .baseUrl(travelPointControllerUrl)
+                .baseUrl(travelPointPolygonUrl)
                 .exchangeStrategies(exchangeStrategies)
                 .build()
                 .post()

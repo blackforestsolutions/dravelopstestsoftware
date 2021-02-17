@@ -45,7 +45,7 @@ public class TestUtils {
         };
     }
 
-    public static Consumer<TravelPoint> getTravelPointAssertions() {
+    public static Consumer<TravelPoint> getAddressesAssertions() {
         return travelPoint -> {
             assertThat(travelPoint).isNotNull();
             assertThat(travelPoint.getName()).isNotEmpty();
@@ -53,6 +53,16 @@ public class TestUtils {
             assertThat(travelPoint.getPlatform()).isEmpty();
             assertThat(travelPoint.getArrivalTime()).isNull();
             assertThat(travelPoint.getDepartureTime()).isNull();
+        };
+    }
+
+    public static Consumer<TravelPoint> getAllStationsAssertions() {
+        return travelPoint -> {
+            assertThat(travelPoint.getName()).isNotEmpty();
+            assertThat(travelPoint.getPoint()).isNotNull();
+            assertThat(travelPoint.getArrivalTime()).isNull();
+            assertThat(travelPoint.getDepartureTime()).isNull();
+            assertThat(travelPoint.getPlatform()).isNotNull();
         };
     }
 }
