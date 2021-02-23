@@ -44,7 +44,7 @@ public class TravelPointConfiguration {
 
 
     /**
-     * This section configures the baseUrl for the stationPersistenceApi
+     * This section configures the travelPoint Url for the stationPersistenceApi
      */
     @Value("${stationpersistence.protocol}")
     private String stationPersistenceProtocol;
@@ -53,10 +53,10 @@ public class TravelPointConfiguration {
     @Value("${stationpersistence.port}")
     private String stationsPersistencePort;
     @Value("${stationpersistence.travelpoint.controller.path}")
-    private String stationsPersistenceControllerPath;
+    private String stationsPersistenceTravelPointControllerPath;
 
     @Bean
-    public String stationsPersistenceUrl() {
+    public String stationsPersistenceTravelPointUrl() {
         return ""
                 .concat(stationPersistenceProtocol)
                 .concat("://")
@@ -64,7 +64,7 @@ public class TravelPointConfiguration {
                 .concat(":")
                 .concat(stationsPersistencePort)
                 .concat("/")
-                .concat(stationsPersistenceControllerPath);
+                .concat(stationsPersistenceTravelPointControllerPath);
     }
 
 }

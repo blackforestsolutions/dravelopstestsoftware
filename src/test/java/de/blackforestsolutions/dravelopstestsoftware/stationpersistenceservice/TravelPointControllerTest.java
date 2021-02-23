@@ -21,7 +21,7 @@ import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.g
 public class TravelPointControllerTest {
 
     @Autowired
-    private String stationsPersistenceUrl;
+    private String stationsPersistenceTravelPointUrl;
 
     @Autowired
     private ExchangeStrategies exchangeStrategies;
@@ -44,7 +44,7 @@ public class TravelPointControllerTest {
     private WebTestClient.ResponseSpec getAllStations() {
         return WebTestClient
                 .bindToServer()
-                .baseUrl(stationsPersistenceUrl)
+                .baseUrl(stationsPersistenceTravelPointUrl)
                 .exchangeStrategies(exchangeStrategies)
                 .build()
                 .get()
