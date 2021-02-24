@@ -13,13 +13,12 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import static de.blackforestsolutions.dravelopstestsoftware.configuration.GeocodingConfiguration.MIN_POLYGON_POINTS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Import(GeocodingConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GeocodingControllerTest {
-
-    private static final int MIN_POLYGON_POINTS = 3;
 
     @Autowired
     private String stationsPersistenceGeocodingPolygonUrl;

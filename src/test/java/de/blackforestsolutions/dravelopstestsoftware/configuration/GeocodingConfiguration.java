@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 @TestConfiguration
 public class GeocodingConfiguration {
 
+    public static final int MIN_POLYGON_POINTS = 3;
+
     /**
      * This section configures the geocoding urls for the stationPersistenceApi
      */
