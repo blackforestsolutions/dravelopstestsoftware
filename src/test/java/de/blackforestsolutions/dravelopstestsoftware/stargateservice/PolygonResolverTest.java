@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static de.blackforestsolutions.dravelopstestsoftware.configuration.GeocodingConfiguration.MIN_POLYGON_POINTS;
+import static de.blackforestsolutions.dravelopstestsoftware.configuration.GeocodingConfiguration.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,10 +27,10 @@ public class PolygonResolverTest {
         StepVerifier.create(result)
                 .assertNext(polygon -> {
                     assertThat(polygon.getPoints().size()).isGreaterThanOrEqualTo(MIN_POLYGON_POINTS);
-                    assertThat(polygon.getPoints()).allMatch(coordinate -> coordinate.getX() >= -180.0d);
-                    assertThat(polygon.getPoints()).allMatch(coordinate -> coordinate.getX() <= 180.0d);
-                    assertThat(polygon.getPoints()).allMatch(coordinate -> coordinate.getY() >= -90.0d);
-                    assertThat(polygon.getPoints()).allMatch(coordinate -> coordinate.getY() <= 90.0d);
+                    assertThat(polygon.getPoints()).allMatch(coordinate -> coordinate.getX() >= MIN_WGS_84_LONGITUDE);
+                    assertThat(polygon.getPoints()).allMatch(coordinate -> coordinate.getX() <= MAX_WGS_84_LONGITUDE);
+                    assertThat(polygon.getPoints()).allMatch(coordinate -> coordinate.getY() >= MIN_WGS_84_LATITUDE);
+                    assertThat(polygon.getPoints()).allMatch(coordinate -> coordinate.getY() <= MAX_WGS_84_LATITUDE);
                 })
                 .verifyComplete();
     }

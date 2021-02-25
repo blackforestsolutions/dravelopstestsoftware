@@ -13,7 +13,7 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static de.blackforestsolutions.dravelopstestsoftware.configuration.GeocodingConfiguration.MIN_POLYGON_POINTS;
+import static de.blackforestsolutions.dravelopstestsoftware.configuration.GeocodingConfiguration.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Import(GeocodingConfiguration.class)
@@ -42,10 +42,10 @@ public class GeocodingControllerTest {
         StepVerifier.create(result)
                 .assertNext(polygon -> {
                     assertThat(polygon.getExteriorRing().getCoordinates().length).isGreaterThanOrEqualTo(MIN_POLYGON_POINTS);
-                    assertThat(polygon.getExteriorRing().getCoordinates()).allMatch(coordinate -> coordinate.getX() >= -180.0d);
-                    assertThat(polygon.getExteriorRing().getCoordinates()).allMatch(coordinate -> coordinate.getX() <= 180.0d);
-                    assertThat(polygon.getExteriorRing().getCoordinates()).allMatch(coordinate -> coordinate.getY() >= -90.0d);
-                    assertThat(polygon.getExteriorRing().getCoordinates()).allMatch(coordinate -> coordinate.getY() <= 90.0d);
+                    assertThat(polygon.getExteriorRing().getCoordinates()).allMatch(coordinate -> coordinate.getX() >= MIN_WGS_84_LONGITUDE);
+                    assertThat(polygon.getExteriorRing().getCoordinates()).allMatch(coordinate -> coordinate.getX() <= MAX_WGS_84_LONGITUDE);
+                    assertThat(polygon.getExteriorRing().getCoordinates()).allMatch(coordinate -> coordinate.getY() >= MIN_WGS_84_LATITUDE);
+                    assertThat(polygon.getExteriorRing().getCoordinates()).allMatch(coordinate -> coordinate.getY() <= MAX_WGS_84_LATITUDE);
                 })
                 .verifyComplete();
 
@@ -65,10 +65,10 @@ public class GeocodingControllerTest {
                 .assertNext(box -> {
                     assertThat(box.getTopLeft()).isNotNull();
                     assertThat(box.getBottomRight()).isNotNull();
-                    assertThat(box.getBottomRight().getX()).isLessThanOrEqualTo(180.0d);
-                    assertThat(box.getBottomRight().getX()).isGreaterThanOrEqualTo(-180.0d);
-                    assertThat(box.getBottomRight().getY()).isLessThanOrEqualTo(90.0d);
-                    assertThat(box.getBottomRight().getY()).isGreaterThanOrEqualTo(-90.0d);
+                    assertThat(box.getBottomRight().getX()).isGreaterThanOrEqualTo(MIN_WGS_84_LONGITUDE);
+                    assertThat(box.getBottomRight().getX()).isLessThanOrEqualTo(MAX_WGS_84_LONGITUDE);
+                    assertThat(box.getBottomRight().getY()).isGreaterThanOrEqualTo(MIN_WGS_84_LATITUDE);
+                    assertThat(box.getBottomRight().getY()).isLessThanOrEqualTo(MAX_WGS_84_LATITUDE);
                 })
                 .verifyComplete();
 

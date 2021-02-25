@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Bean;
 public class GeocodingConfiguration {
 
     public static final int MIN_POLYGON_POINTS = 3;
+    public static final double MIN_WGS_84_LONGITUDE = -180.0d;
+    public static final double MAX_WGS_84_LONGITUDE = 180.0d;
+    public static final double MIN_WGS_84_LATITUDE = -90.0d;
+    public static final double MAX_WGS_84_LATITUDE = 90.0d;
 
     /**
      * This section configures the geocoding urls for the stationPersistenceApi
