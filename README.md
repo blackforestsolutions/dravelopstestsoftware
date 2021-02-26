@@ -5,4 +5,4 @@
 
 ## Nice-To-Know
 
-Everything about working with submodules you find [here](https://git-scm.com/book/de/v2/Git-Tools-Submodule).
+Everything about working with submodules you can find [here](https://git-scm.com/book/de/v2/Git-Tools-Submodule).
