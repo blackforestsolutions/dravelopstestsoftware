@@ -65,10 +65,10 @@ public class GeocodingControllerTest {
                 .assertNext(box -> {
                     assertThat(box.getTopLeft()).isNotNull();
                     assertThat(box.getBottomRight()).isNotNull();
-                    assertThat(box.getBottomRight().getX()).isGreaterThanOrEqualTo(MIN_WGS_84_LONGITUDE);
+                    assertThat(box.getTopLeft().getX()).isGreaterThanOrEqualTo(MIN_WGS_84_LONGITUDE);
+                    assertThat(box.getTopLeft().getY()).isLessThanOrEqualTo(MAX_WGS_84_LATITUDE);
                     assertThat(box.getBottomRight().getX()).isLessThanOrEqualTo(MAX_WGS_84_LONGITUDE);
                     assertThat(box.getBottomRight().getY()).isGreaterThanOrEqualTo(MIN_WGS_84_LATITUDE);
-                    assertThat(box.getBottomRight().getY()).isLessThanOrEqualTo(MAX_WGS_84_LATITUDE);
                 })
                 .verifyComplete();
 
