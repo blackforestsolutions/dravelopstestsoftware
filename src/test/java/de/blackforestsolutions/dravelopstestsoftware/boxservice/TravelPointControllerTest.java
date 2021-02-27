@@ -1,4 +1,4 @@
-package de.blackforestsolutions.dravelopstestsoftware.polygonservice;
+package de.blackforestsolutions.dravelopstestsoftware.boxservice;
 
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
 import de.blackforestsolutions.dravelopsdatamodel.TravelPoint;
@@ -23,7 +23,7 @@ import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.g
 public class TravelPointControllerTest {
 
     @Autowired
-    private String travelPointPolygonUrl;
+    private String travelPointBoxServiceUrl;
 
     @Autowired
     private ApiToken.ApiTokenBuilder travelPointApiToken;
@@ -67,7 +67,7 @@ public class TravelPointControllerTest {
     private WebTestClient.ResponseSpec retrievePeliasTravelPoints(ApiToken requestToken) {
         return WebTestClient
                 .bindToServer()
-                .baseUrl(travelPointPolygonUrl)
+                .baseUrl(travelPointBoxServiceUrl)
                 .exchangeStrategies(exchangeStrategies)
                 .build()
                 .post()

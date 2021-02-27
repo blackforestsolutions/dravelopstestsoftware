@@ -19,27 +19,27 @@ public class TravelPointConfiguration {
     }
 
     /**
-     * This section configures the baseUrl for the polygonservice.
+     * This section configures the baseUrl for the boxservice.
      */
-    @Value("${polygon.protocol}")
-    private String polygonProtocol;
-    @Value("${polygon.host}")
-    private String polygonHost;
-    @Value("${polygon.port}")
-    private String polygonPort;
-    @Value("${polygon.travelpoint.controller.path}")
-    private String polygonTravelPointControllerPath;
+    @Value("${boxservice.protocol}")
+    private String boxServiceProtocol;
+    @Value("${boxservice.host}")
+    private String boxServiceHost;
+    @Value("${boxservice.port}")
+    private String boxServicePort;
+    @Value("${boxservice.travelpoint.controller.path}")
+    private String boxServiceTravelPointControllerPath;
 
     @Bean
-    public String travelPointPolygonUrl() {
+    public String travelPointBoxServiceUrl() {
         return ""
-                .concat(polygonProtocol)
+                .concat(boxServiceProtocol)
                 .concat("://")
-                .concat(polygonHost)
+                .concat(boxServiceHost)
                 .concat(":")
-                .concat(polygonPort)
+                .concat(boxServicePort)
                 .concat("/")
-                .concat(polygonTravelPointControllerPath);
+                .concat(boxServiceTravelPointControllerPath);
     }
 
 
