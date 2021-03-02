@@ -1,5 +1,5 @@
-query GetJourneys($departureLatitude: Float!, $departureLongitude: Float!, $arrivalLatitude: Float!, $arrivalLongitude: Float!, $dateTime: String!, $isArrivalDateTime: Boolean!, $optimize: Optimization, $language: String!) {
-    getJourneysBy(departureLatitude: $departureLatitude, departureLongitude: $departureLongitude, arrivalLatitude: $arrivalLatitude, arrivalLongitude: $arrivalLongitude, dateTime: $dateTime, isArrivalDateTime: $isArrivalDateTime, optimize: $optimize, language: $language) {
+query GetJourneys($departureLatitude: Float!, $departureLongitude: Float!, $arrivalLatitude: Float!, $arrivalLongitude: Float!, $dateTime: String!, $isArrivalDateTime: Boolean!, $language: String!) {
+    getJourneysBy(departureLatitude: $departureLatitude, departureLongitude: $departureLongitude, arrivalLatitude: $arrivalLatitude, arrivalLongitude: $arrivalLongitude, dateTime: $dateTime, isArrivalDateTime: $isArrivalDateTime, language: $language) {
         legs {
             departure {
                 name

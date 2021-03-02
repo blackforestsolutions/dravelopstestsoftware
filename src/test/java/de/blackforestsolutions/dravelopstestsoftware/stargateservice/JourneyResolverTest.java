@@ -86,7 +86,6 @@ public class JourneyResolverTest {
                 ARRIVAL_LATITUDE_PARAM, apiToken.getArrivalCoordinate().getY(),
                 ARRIVAL_LONGITUDE_PARAM, apiToken.getArrivalCoordinate().getX(),
                 DATE_TIME_PARAM, apiToken.getDateTime(),
-                OPTIMIZATION_PARAM, apiToken.getOptimize(),
                 IS_ARRIVAL_DATE_TIME_PARAM, apiToken.getIsArrivalDateTime(),
                 LANGUAGE_PARAM, apiToken.getLanguage().toString()
         );
