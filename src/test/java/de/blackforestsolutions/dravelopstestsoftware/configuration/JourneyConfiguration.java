@@ -77,29 +77,4 @@ public class JourneyConfiguration {
                 .concat("/")
                 .concat(routePersistenceJourneyControllerPath);
     }
-
-
-    /**
-     * This section configures the baseUrl for the routePersistenceApi.
-     */
-    @Value("${stargate.protocol}")
-    private String stargateProtocol;
-    @Value("${stargate.host}")
-    private String stargateHost;
-    @Value("${stargate.port}")
-    private String stargatePort;
-    @Value("${stargate.journey.controller.path}")
-    private String stargateJourneyControllerPath;
-
-    @Bean
-    public String journeyStargateUrl() {
-        return ""
-                .concat(stargateProtocol)
-                .concat("://")
-                .concat(stargateHost)
-                .concat(":")
-                .concat(stargatePort)
-                .concat("/")
-                .concat(stargateJourneyControllerPath);
-    }
 }
