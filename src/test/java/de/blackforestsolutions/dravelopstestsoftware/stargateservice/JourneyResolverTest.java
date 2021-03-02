@@ -28,7 +28,6 @@ public class JourneyResolverTest {
     private static final String ARRIVAL_LATITUDE_PARAM = "arrivalLatitude";
     private static final String ARRIVAL_LONGITUDE_PARAM = "arrivalLongitude";
     private static final String DATE_TIME_PARAM = "dateTime";
-    private static final String OPTIMIZATION_PARAM = "optimize";
     private static final String IS_ARRIVAL_DATE_TIME_PARAM = "isArrivalDateTime";
     private static final String LANGUAGE_PARAM = "language";
 
