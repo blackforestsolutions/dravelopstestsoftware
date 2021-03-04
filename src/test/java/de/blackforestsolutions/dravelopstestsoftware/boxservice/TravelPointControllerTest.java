@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
@@ -89,7 +91,7 @@ public class TravelPointControllerTest {
     void test_getNearestAddresses_with_incorrect_apiToken_returns_zero_travelPoints() {
         ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(travelPointApiToken);
         testData.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
-        testData.setRadiusInKilometers(1);
+        testData.setRadiusInKilometers(new Distance(1.0d, Metrics.KILOMETERS));
 
         Flux<TravelPoint> result = getNearestAddresses(testData.build())
                 .expectStatus()
