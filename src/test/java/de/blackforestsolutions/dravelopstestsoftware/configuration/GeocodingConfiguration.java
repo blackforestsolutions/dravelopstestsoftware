@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 @TestConfiguration
 public class GeocodingConfiguration {
 
+    public static final double MIN_DISTANCE_IN_KILOMETERS_TO_POINT = 0.0d;
     public static final int MIN_POLYGON_POINTS = 3;
     public static final double MIN_WGS_84_LONGITUDE = -180.0d;
     public static final double MAX_WGS_84_LONGITUDE = 180.0d;
