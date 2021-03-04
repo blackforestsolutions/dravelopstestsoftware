@@ -15,7 +15,7 @@ import reactor.test.StepVerifier;
 
 import java.util.Map;
 
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getAddressesAssertions;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getAutocompleteAddressesAssertions;
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getAllStationsAssertions;
 
 @Import(TravelPointConfiguration.class)
@@ -37,8 +37,8 @@ public class TravelPointResolverTest {
         Flux<TravelPoint> result = getAddressesBy(travelPointApiToken.build());
 
         StepVerifier.create(result)
-                .assertNext(getAddressesAssertions())
-                .thenConsumeWhile(travelPoint -> true, getAddressesAssertions())
+                .assertNext(getAutocompleteAddressesAssertions())
+                .thenConsumeWhile(travelPoint -> true, getAutocompleteAddressesAssertions())
                 .verifyComplete();
     }
 
