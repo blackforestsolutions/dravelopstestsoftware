@@ -88,7 +88,6 @@ public class TestUtils {
             assertThat(travelPoint.getPoint().getY()).isLessThanOrEqualTo(MAX_WGS_84_LATITUDE);
             assertThat(travelPoint.getDistanceInKilometers()).isNotNull();
             assertThat(travelPoint.getDistanceInKilometers().getValue()).isGreaterThanOrEqualTo(MIN_DISTANCE_IN_KILOMETERS_TO_POINT);
-            assertThat(travelPoint.getDistanceInKilometers().getMetric()).isEqualTo(Metrics.KILOMETERS);
             assertThat(travelPoint.getDepartureTime()).isNull();
             assertThat(travelPoint.getArrivalTime()).isNull();
             assertThat(travelPoint.getPlatform()).isEmpty();
@@ -106,6 +105,7 @@ public class TestUtils {
             assertThat(travelPoint.getArrivalTime()).isNull();
             assertThat(travelPoint.getDepartureTime()).isNull();
             assertThat(travelPoint.getPlatform()).isNotNull();
+            assertThat(travelPoint.getDistanceInKilometers()).isNull();
         };
     }
 }

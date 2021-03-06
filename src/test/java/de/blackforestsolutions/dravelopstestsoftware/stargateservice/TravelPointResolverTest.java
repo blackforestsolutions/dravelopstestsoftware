@@ -15,8 +15,7 @@ import reactor.test.StepVerifier;
 
 import java.util.Map;
 
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getAutocompleteAddressesAssertions;
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getAllStationsAssertions;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.*;
 
 @Import(TravelPointConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,6 +23,9 @@ public class TravelPointResolverTest {
 
     private static final String TEXT_PARAM = "text";
     private static final String LANGUAGE_PARAM = "language";
+    private static final String LONGITUDE_PARAM = "longitude";
+    private static final String LATITUDE_PARAM = "latitude";
+    private static final String RADIUS_IN_KILOMETERS_PARAMS = "radiusInKilometers";
 
     @Autowired
     private ApiToken.ApiTokenBuilder travelPointApiToken;
@@ -32,9 +34,9 @@ public class TravelPointResolverTest {
     private WebClient webClient;
 
     @Test
-    void test_getAddressesBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
+    void test_getAutocompleteAddressesBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
 
-        Flux<TravelPoint> result = getAddressesBy(travelPointApiToken.build());
+        Flux<TravelPoint> result = getAutocompleteAddressesBy(travelPointApiToken.build());
 
         StepVerifier.create(result)
                 .assertNext(getAutocompleteAddressesAssertions())
@@ -43,11 +45,11 @@ public class TravelPointResolverTest {
     }
 
     @Test
-    void test_getAddressesBy_max_parameters_graphql_file_and_incorrect_apiToken_returns_zero_travelPoints() {
-        ApiToken.ApiTokenBuilder travelPointUserRequestToken = new ApiToken.ApiTokenBuilder(this.travelPointApiToken);
-        travelPointUserRequestToken.setDeparture("No TravelPoint is available in pelias for this string");
+    void test_getAutocompleteAddressesBy_max_parameters_graphql_file_and_incorrect_apiToken_returns_zero_travelPoints() {
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(this.travelPointApiToken);
+        testData.setDeparture("No TravelPoint is available in pelias for this string");
 
-        Flux<TravelPoint> result = getAddressesBy(travelPointUserRequestToken.build());
+        Flux<TravelPoint> result = getAutocompleteAddressesBy(testData.build());
 
         StepVerifier.create(result)
                 .expectNextCount(0L)
@@ -55,7 +57,19 @@ public class TravelPointResolverTest {
     }
 
     @Test
-    void test_getAllStations_with_grpahql_file_returns_travelPoints() {
+    void test_getNearestAddressesBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
+        ApiToken testData = travelPointApiToken.build();
+
+        Flux<TravelPoint> result = getNearestAddressesBy(testData);
+
+        StepVerifier.create(result)
+                .assertNext(getNearestAddressesAssertions())
+                .thenConsumeWhile(travelPoint -> true, getNearestAddressesAssertions())
+                .verifyComplete();
+    }
+
+    @Test
+    void test_getAllStations_with_graphql_file_returns_travelPoints() {
 
         Flux<TravelPoint> result = getAllStations();
 
@@ -65,10 +79,16 @@ public class TravelPointResolverTest {
                 .verifyComplete();
     }
 
-    private Flux<TravelPoint> getAddressesBy(ApiToken apiToken) {
+    private Flux<TravelPoint> getAutocompleteAddressesBy(ApiToken apiToken) {
         return GraphQLWebClient
                 .newInstance(webClient, new DravelOpsJsonMapper())
-                .flux("graphql/get-addresses-max-parameters.graphql", convertToGraphqlParametersWith(apiToken), TravelPoint.class);
+                .flux("graphql/get-autocomplete-addresses-max-parameters.graphql", convertAutocompleteAddressesApiTokenToGraphqlParametersWith(apiToken), TravelPoint.class);
+    }
+
+    private Flux<TravelPoint> getNearestAddressesBy(ApiToken apiToken) {
+        return GraphQLWebClient
+                .newInstance(webClient, new DravelOpsJsonMapper())
+                .flux("graphql/get-nearest-addresses-max-parameters.graphql", convertNearestAddressesApiTokenToGraphqlParametersWith(apiToken), TravelPoint.class);
     }
 
     private Flux<TravelPoint> getAllStations() {
@@ -77,9 +97,18 @@ public class TravelPointResolverTest {
                 .flux("graphql/get-all-stations-parameters.graphql", TravelPoint.class);
     }
 
-    private Map<String, Object> convertToGraphqlParametersWith(ApiToken apiToken) {
+    private Map<String, Object> convertAutocompleteAddressesApiTokenToGraphqlParametersWith(ApiToken apiToken) {
         return Map.of(
                 TEXT_PARAM, apiToken.getDeparture(),
+                LANGUAGE_PARAM, apiToken.getLanguage()
+        );
+    }
+
+    private Map<String, Object> convertNearestAddressesApiTokenToGraphqlParametersWith(ApiToken apiToken) {
+        return Map.of(
+                LONGITUDE_PARAM, apiToken.getArrivalCoordinate().getX(),
+                LATITUDE_PARAM, apiToken.getArrivalCoordinate().getY(),
+                RADIUS_IN_KILOMETERS_PARAMS, apiToken.getRadiusInKilometers().getValue(),
                 LANGUAGE_PARAM, apiToken.getLanguage()
         );
     }
