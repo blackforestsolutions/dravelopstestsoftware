@@ -88,4 +88,28 @@ public class TravelPointConfiguration {
                 .concat(stationsPersistenceTravelPointControllerPath);
     }
 
+    /**
+     * This section configured the nearest station url for otpMapperService
+     */
+    @Value("${otpmapper.protocol}")
+    private String otpMapperProtocol;
+    @Value("${otpmapper.host}")
+    private String otpMapperHost;
+    @Value("${otpmapper.port}")
+    private String otpMapperPort;
+    @Value("${otpmapper.nearest.stations.controller.path}")
+    private String otpMapperNearestStationsControllerPath;
+
+    @Bean
+    public String nearestStationsOtpMapperUrl() {
+        return ""
+                .concat(otpMapperProtocol)
+                .concat("://")
+                .concat(otpMapperHost)
+                .concat(":")
+                .concat(otpMapperPort)
+                .concat("/")
+                .concat(otpMapperNearestStationsControllerPath);
+    }
+
 }

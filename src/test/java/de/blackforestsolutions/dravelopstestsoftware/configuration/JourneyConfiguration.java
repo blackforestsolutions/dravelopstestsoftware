@@ -24,7 +24,7 @@ public class JourneyConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = "test.apitokens[0]")
-    public ApiToken.ApiTokenBuilder journeyApiToken() {
+    public ApiToken.ApiTokenBuilder otpApiToken() {
         return new ApiToken.ApiTokenBuilder()
                 .setDepartureCoordinate(new Point.PointBuilder(departureCoordinateLongitude, departureCoordinateLatitude).build())
                 .setArrivalCoordinate(new Point.PointBuilder(arrivalCoordinateLongitude, arrivalCoordinateLatitude).build());

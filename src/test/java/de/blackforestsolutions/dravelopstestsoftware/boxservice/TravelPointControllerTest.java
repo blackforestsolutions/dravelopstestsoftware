@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getAutocompleteAddressesAssertions;
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getNearestAddressesAssertions;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getNearestTravelPointsAssertions;
 
 @Import(TravelPointConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -82,8 +82,8 @@ public class TravelPointControllerTest {
                 .getResponseBody();
 
         StepVerifier.create(result)
-                .assertNext(getNearestAddressesAssertions())
-                .thenConsumeWhile(travelPoint -> true, getNearestAddressesAssertions())
+                .assertNext(getNearestTravelPointsAssertions())
+                .thenConsumeWhile(travelPoint -> true, getNearestTravelPointsAssertions())
                 .verifyComplete();
     }
 

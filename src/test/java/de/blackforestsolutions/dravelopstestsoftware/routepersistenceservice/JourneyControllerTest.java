@@ -30,17 +30,17 @@ public class JourneyControllerTest {
     private String journeyRoutePersistenceUrl;
 
     @Autowired
-    private ApiToken.ApiTokenBuilder journeyApiToken;
+    private ApiToken.ApiTokenBuilder otpApiToken;
 
     @Autowired
     private ExchangeStrategies exchangeStrategies;
 
     @Test
-    void test_retrieveOpenTripPlannerJourneys_with_correct_apiToken_return_journeys_with_correct_leg_properties() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(journeyApiToken);
+    void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties() {
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(otpApiToken);
         testData.setDateTime(ZonedDateTime.now().plusDays(1L).withHour(12).withMinute(0).withSecond(0));
 
-        Flux<Journey> result = retrieveOpenTripPlannerJourneys(testData.build())
+        Flux<Journey> result = getJourneysBy(testData.build())
                 .expectStatus()
                 .isOk()
                 .returnResult(Journey.class)
@@ -53,10 +53,10 @@ public class JourneyControllerTest {
     }
 
     @Test
-    void test_retrieveOpenTripPlannerJourneys_with_correct_apiToken_return_journeys_with_correct_leg_properties_for_departure_and_arrival() {
-        ApiToken testData = journeyApiToken.build();
+    void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties_for_departure_and_arrival() {
+        ApiToken testData = otpApiToken.build();
 
-        Flux<Journey> result = retrieveOpenTripPlannerJourneys(testData)
+        Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()
                 .isOk()
                 .returnResult(Journey.class)
@@ -69,12 +69,12 @@ public class JourneyControllerTest {
     }
 
     @Test
-    void test_retrieveOpenTripPlannerJourneys_with_incorrect_apiToken_returns_zero_journeys() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(journeyApiToken);
+    void test_getJourneysBy_incorrect_apiToken_returns_zero_journeys() {
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(otpApiToken);
         testData.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
         testData.setDepartureCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
 
-        Flux<Journey> result = retrieveOpenTripPlannerJourneys(testData.build())
+        Flux<Journey> result = getJourneysBy(testData.build())
                 .expectStatus()
                 .isOk()
                 .returnResult(Journey.class)
@@ -85,7 +85,7 @@ public class JourneyControllerTest {
                 .verifyComplete();
     }
 
-    private WebTestClient.ResponseSpec retrieveOpenTripPlannerJourneys(ApiToken requestToken) {
+    private WebTestClient.ResponseSpec getJourneysBy(ApiToken requestToken) {
         return WebTestClient
                 .bindToServer()
                 .baseUrl(journeyRoutePersistenceUrl)
