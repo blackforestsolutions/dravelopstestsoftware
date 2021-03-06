@@ -69,6 +69,18 @@ public class TravelPointResolverTest {
     }
 
     @Test
+    void test_getNearestStationsBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
+        ApiToken testData = travelPointApiToken.build();
+
+        Flux<TravelPoint> result = getNearestStationsBy(testData);
+
+        StepVerifier.create(result)
+                .assertNext(getNearestTravelPointsAssertions())
+                .thenConsumeWhile(travelPoint -> true, getNearestTravelPointsAssertions())
+                .verifyComplete();
+    }
+
+    @Test
     void test_getAllStations_with_graphql_file_returns_travelPoints() {
 
         Flux<TravelPoint> result = getAllStations();
@@ -88,7 +100,13 @@ public class TravelPointResolverTest {
     private Flux<TravelPoint> getNearestAddressesBy(ApiToken apiToken) {
         return GraphQLWebClient
                 .newInstance(webClient, new DravelOpsJsonMapper())
-                .flux("graphql/get-nearest-addresses-max-parameters.graphql", convertNearestAddressesApiTokenToGraphqlParametersWith(apiToken), TravelPoint.class);
+                .flux("graphql/get-nearest-addresses-max-parameters.graphql", convertNearestApiTokenToGraphqlParametersWith(apiToken), TravelPoint.class);
+    }
+
+    private Flux<TravelPoint> getNearestStationsBy(ApiToken apiToken) {
+        return GraphQLWebClient
+                .newInstance(webClient, new DravelOpsJsonMapper())
+                .flux("graphql/get-nearest-stations-max-parameters.graphql", convertNearestApiTokenToGraphqlParametersWith(apiToken), TravelPoint.class);
     }
 
     private Flux<TravelPoint> getAllStations() {
@@ -104,7 +122,7 @@ public class TravelPointResolverTest {
         );
     }
 
-    private Map<String, Object> convertNearestAddressesApiTokenToGraphqlParametersWith(ApiToken apiToken) {
+    private Map<String, Object> convertNearestApiTokenToGraphqlParametersWith(ApiToken apiToken) {
         return Map.of(
                 LONGITUDE_PARAM, apiToken.getArrivalCoordinate().getX(),
                 LATITUDE_PARAM, apiToken.getArrivalCoordinate().getY(),
