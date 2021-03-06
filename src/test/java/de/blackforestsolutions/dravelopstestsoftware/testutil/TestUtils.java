@@ -2,7 +2,6 @@ package de.blackforestsolutions.dravelopstestsoftware.testutil;
 
 import de.blackforestsolutions.dravelopsdatamodel.Journey;
 import de.blackforestsolutions.dravelopsdatamodel.TravelPoint;
-import org.springframework.data.geo.Metrics;
 
 import java.util.function.Consumer;
 
