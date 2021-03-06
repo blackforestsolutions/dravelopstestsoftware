@@ -30,14 +30,14 @@ public class JourneyControllerTest {
     private String journeyRoutePersistenceUrl;
 
     @Autowired
-    private ApiToken.ApiTokenBuilder journeyApiToken;
+    private ApiToken.ApiTokenBuilder otpApiToken;
 
     @Autowired
     private ExchangeStrategies exchangeStrategies;
 
     @Test
     void test_retrieveOpenTripPlannerJourneys_with_correct_apiToken_return_journeys_with_correct_leg_properties() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(journeyApiToken);
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(otpApiToken);
         testData.setDateTime(ZonedDateTime.now().plusDays(1L).withHour(12).withMinute(0).withSecond(0));
 
         Flux<Journey> result = retrieveOpenTripPlannerJourneys(testData.build())
@@ -54,7 +54,7 @@ public class JourneyControllerTest {
 
     @Test
     void test_retrieveOpenTripPlannerJourneys_with_correct_apiToken_return_journeys_with_correct_leg_properties_for_departure_and_arrival() {
-        ApiToken testData = journeyApiToken.build();
+        ApiToken testData = otpApiToken.build();
 
         Flux<Journey> result = retrieveOpenTripPlannerJourneys(testData)
                 .expectStatus()
@@ -70,7 +70,7 @@ public class JourneyControllerTest {
 
     @Test
     void test_retrieveOpenTripPlannerJourneys_with_incorrect_apiToken_returns_zero_journeys() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(journeyApiToken);
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(otpApiToken);
         testData.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
         testData.setDepartureCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
 

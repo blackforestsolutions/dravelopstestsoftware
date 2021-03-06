@@ -63,8 +63,8 @@ public class TravelPointResolverTest {
         Flux<TravelPoint> result = getNearestAddressesBy(testData);
 
         StepVerifier.create(result)
-                .assertNext(getNearestAddressesAssertions())
-                .thenConsumeWhile(travelPoint -> true, getNearestAddressesAssertions())
+                .assertNext(getNearestTravelPointsAssertions())
+                .thenConsumeWhile(travelPoint -> true, getNearestTravelPointsAssertions())
                 .verifyComplete();
     }
 

@@ -32,7 +32,7 @@ public class JourneyResolverTest {
     private static final String LANGUAGE_PARAM = "language";
 
     @Autowired
-    private ApiToken.ApiTokenBuilder journeyApiToken;
+    private ApiToken.ApiTokenBuilder otpApiToken;
 
     @Autowired
     private WebClient webClient;
@@ -40,7 +40,7 @@ public class JourneyResolverTest {
     @Test
     void test_getJourneysBy_max_parameters_graphql_file_and_apiToken_returns_journeys_with_correct_leg_properties() {
 
-        Flux<Journey> result = getJourneysBy(journeyApiToken.build());
+        Flux<Journey> result = getJourneysBy(otpApiToken.build());
 
         StepVerifier.create(result)
                 .assertNext(getLegPropertiesAssertions())
@@ -51,7 +51,7 @@ public class JourneyResolverTest {
     @Test
     void test_getJourneysBy_max_parameters_graphql_file_and_apiToken_returns_journeys_with_correct_leg_properties_for_departure_and_arrival() {
 
-        Flux<Journey> result = getJourneysBy(journeyApiToken.build());
+        Flux<Journey> result = getJourneysBy(otpApiToken.build());
 
         StepVerifier.create(result)
                 .assertNext(getArrivalAndDepartureLegAssertions())
@@ -61,7 +61,7 @@ public class JourneyResolverTest {
 
     @Test
     void test_getJourneysBy_max_parameters_graphql_file_and_incorrect_apiToken_returns_zero_journeys() {
-        ApiToken.ApiTokenBuilder journeyApiToken = new ApiToken.ApiTokenBuilder(this.journeyApiToken);
+        ApiToken.ApiTokenBuilder journeyApiToken = new ApiToken.ApiTokenBuilder(this.otpApiToken);
         journeyApiToken.setDepartureCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
         journeyApiToken.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
 

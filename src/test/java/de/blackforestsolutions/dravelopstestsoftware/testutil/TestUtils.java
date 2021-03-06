@@ -76,7 +76,7 @@ public class TestUtils {
         };
     }
 
-    public static Consumer<TravelPoint> getNearestAddressesAssertions() {
+    public static Consumer<TravelPoint> getNearestTravelPointsAssertions() {
         return travelPoint -> {
             assertThat(travelPoint).isNotNull();
             assertThat(travelPoint.getName()).isNotEmpty();
