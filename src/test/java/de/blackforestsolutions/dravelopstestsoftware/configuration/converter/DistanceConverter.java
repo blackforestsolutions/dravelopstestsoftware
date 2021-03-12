@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationPropertiesBinding
-public class DistanceConverter implements Converter<String, Distance> {
+public class DistanceConverter implements Converter<Double, Distance> {
 
     @Override
-    public Distance convert(@NonNull String distanceInKilometers) {
-        return new Distance(Double.parseDouble(distanceInKilometers), Metrics.KILOMETERS);
+    public Distance convert(@NonNull Double distanceInKilometers) {
+        return new Distance(distanceInKilometers, Metrics.KILOMETERS);
     }
 }

@@ -34,9 +34,9 @@ public class TravelPointConfiguration {
     private String boxServiceHost;
     @Value("${boxservice.port}")
     private String boxServicePort;
-    @Value("${boxservice.autocomplete.addresses.controller.path}")
+    @Value("${boxservice.get.autocomplete.addresses.controller.path}")
     private String boxServiceAutocompleteAddressesControllerPath;
-    @Value("${boxservice.nearest.addresses.controller.path}")
+    @Value("${boxservice.get.nearest.addresses.controller.path}")
     private String boxServiceNearestAddressesControllerPath;
 
     @Bean
@@ -73,8 +73,8 @@ public class TravelPointConfiguration {
     private String stationsPersistenceHost;
     @Value("${stationpersistence.port}")
     private String stationsPersistencePort;
-    @Value("${stationpersistence.travelpoint.controller.path}")
-    private String stationsPersistenceTravelPointControllerPath;
+    @Value("${stationpersistence.get.travelpoint.path}")
+    private String stationsPersistenceTravelPointPath;
 
     @Bean
     public String stationsPersistenceTravelPointUrl() {
@@ -85,7 +85,7 @@ public class TravelPointConfiguration {
                 .concat(":")
                 .concat(stationsPersistencePort)
                 .concat("/")
-                .concat(stationsPersistenceTravelPointControllerPath);
+                .concat(stationsPersistenceTravelPointPath);
     }
 
     /**
@@ -97,7 +97,7 @@ public class TravelPointConfiguration {
     private String otpMapperHost;
     @Value("${otpmapper.port}")
     private String otpMapperPort;
-    @Value("${otpmapper.nearest.stations.controller.path}")
+    @Value("${otpmapper.get.nearest.stations.path}")
     private String otpMapperNearestStationsControllerPath;
 
     @Bean

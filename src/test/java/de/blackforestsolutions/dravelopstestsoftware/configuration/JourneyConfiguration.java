@@ -39,8 +39,8 @@ public class JourneyConfiguration {
     private String otpMapperHost;
     @Value("${otpmapper.port}")
     private String otpMapperPort;
-    @Value("${otpmapper.journey.controller.path}")
-    private String otpMapperJourneyControllerPath;
+    @Value("${otpmapper.get.journey.path}")
+    private String otpMapperJourneyPath;
 
     @Bean
     public String journeyOtpMapperUrl() {
@@ -51,7 +51,7 @@ public class JourneyConfiguration {
                 .concat(":")
                 .concat(otpMapperPort)
                 .concat("/")
-                .concat(otpMapperJourneyControllerPath);
+                .concat(otpMapperJourneyPath);
     }
 
     /**
@@ -63,8 +63,8 @@ public class JourneyConfiguration {
     private String routePersistenceHost;
     @Value("${routepersistence.port}")
     private String routePersistencePort;
-    @Value("${routepersistence.journey.controller.path}")
-    private String routePersistenceJourneyControllerPath;
+    @Value("${routepersistence.get.journey.path}")
+    private String routePersistenceJourneyPath;
 
     @Bean
     public String journeyRoutePersistenceUrl() {
@@ -75,6 +75,6 @@ public class JourneyConfiguration {
                 .concat(":")
                 .concat(routePersistencePort)
                 .concat("/")
-                .concat(routePersistenceJourneyControllerPath);
+                .concat(routePersistenceJourneyPath);
     }
 }

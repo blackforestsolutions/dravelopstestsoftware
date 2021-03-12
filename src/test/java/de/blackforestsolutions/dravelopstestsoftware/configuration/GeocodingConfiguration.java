@@ -23,10 +23,10 @@ public class GeocodingConfiguration {
     private String stationsPersistenceHost;
     @Value("${stationpersistence.port}")
     private String stationsPersistencePort;
-    @Value("${stationpersistence.geocoding.controller.polygon.path}")
-    private String stationsPersistenceGeocodingControllerPolygon;
-    @Value("${stationpersistence.geocoding.controller.box.path}")
-    private String stationsPersistenceGeocodingControllerBox;
+    @Value("${stationpersistence.get.polygon.path}")
+    private String stationsPersistencePolygonPath;
+    @Value("${stationpersistence.get.box.path}")
+    private String stationsPersistenceBoxPath;
 
     @Bean
     public String stationsPersistenceGeocodingPolygonUrl() {
@@ -37,7 +37,7 @@ public class GeocodingConfiguration {
                 .concat(":")
                 .concat(stationsPersistencePort)
                 .concat("/")
-                .concat(stationsPersistenceGeocodingControllerPolygon);
+                .concat(stationsPersistencePolygonPath);
     }
 
     @Bean
@@ -49,6 +49,6 @@ public class GeocodingConfiguration {
                 .concat(":")
                 .concat(stationsPersistencePort)
                 .concat("/")
-                .concat(stationsPersistenceGeocodingControllerBox);
+                .concat(stationsPersistenceBoxPath);
     }
 }
