@@ -3,6 +3,7 @@ package de.blackforestsolutions.dravelopstestsoftware.stargateservice;
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
 import de.blackforestsolutions.dravelopsdatamodel.TravelPoint;
 import de.blackforestsolutions.dravelopsdatamodel.util.DravelOpsJsonMapper;
+import de.blackforestsolutions.dravelopstestsoftware.configuration.ApiTokenConfiguration;
 import de.blackforestsolutions.dravelopstestsoftware.configuration.TravelPointConfiguration;
 import graphql.kickstart.spring.webclient.boot.GraphQLWebClient;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.*;
 
-@Import(TravelPointConfiguration.class)
+@Import(value = {ApiTokenConfiguration.class, TravelPointConfiguration.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class TravelPointResolverTest {
@@ -30,15 +31,16 @@ public class TravelPointResolverTest {
     private static final String RADIUS_IN_KILOMETERS_PARAMS = "radiusInKilometers";
 
     @Autowired
-    private ApiToken.ApiTokenBuilder travelPointApiToken;
+    private ApiToken testApiToken;
 
     @Autowired
     private WebClient webClient;
 
     @Test
     void test_getAutocompleteAddressesBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
+        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
 
-        Flux<TravelPoint> result = getAutocompleteAddressesBy(travelPointApiToken.build());
+        Flux<TravelPoint> result = getAutocompleteAddressesBy(testData);
 
         StepVerifier.create(result)
                 .assertNext(getAutocompleteAddressesAssertions())
@@ -48,7 +50,7 @@ public class TravelPointResolverTest {
 
     @Test
     void test_getAutocompleteAddressesBy_max_parameters_graphql_file_and_incorrect_apiToken_returns_zero_travelPoints() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(this.travelPointApiToken);
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(testApiToken);
         testData.setDeparture("No TravelPoint is available in pelias for this string");
 
         Flux<TravelPoint> result = getAutocompleteAddressesBy(testData.build());
@@ -60,7 +62,7 @@ public class TravelPointResolverTest {
 
     @Test
     void test_getNearestAddressesBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
-        ApiToken testData = travelPointApiToken.build();
+        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
 
         Flux<TravelPoint> result = getNearestAddressesBy(testData);
 
@@ -72,7 +74,7 @@ public class TravelPointResolverTest {
 
     @Test
     void test_getNearestStationsBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
-        ApiToken testData = travelPointApiToken.build();
+        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
 
         Flux<TravelPoint> result = getNearestStationsBy(testData);
 

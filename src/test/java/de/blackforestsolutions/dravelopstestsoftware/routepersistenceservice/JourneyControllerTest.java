@@ -3,6 +3,7 @@ package de.blackforestsolutions.dravelopstestsoftware.routepersistenceservice;
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
 import de.blackforestsolutions.dravelopsdatamodel.Journey;
 import de.blackforestsolutions.dravelopsdatamodel.Point;
+import de.blackforestsolutions.dravelopstestsoftware.configuration.ApiTokenConfiguration;
 import de.blackforestsolutions.dravelopstestsoftware.configuration.JourneyConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.time.ZonedDateTime;
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getArrivalAndDepartureLegAssertions;
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getLegPropertiesAssertions;
 
-@Import(JourneyConfiguration.class)
+@Import(value = {ApiTokenConfiguration.class, JourneyConfiguration.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @AutoConfigureWebTestClient
@@ -32,14 +33,14 @@ public class JourneyControllerTest {
     private String journeyRoutePersistenceUrl;
 
     @Autowired
-    private ApiToken.ApiTokenBuilder otpApiToken;
+    private ApiToken testApiToken;
 
     @Autowired
     private ExchangeStrategies exchangeStrategies;
 
     @Test
     void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(otpApiToken);
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(testApiToken);
         testData.setDateTime(ZonedDateTime.now().plusDays(1L).withHour(12).withMinute(0).withSecond(0));
 
         Flux<Journey> result = getJourneysBy(testData.build())
@@ -56,7 +57,7 @@ public class JourneyControllerTest {
 
     @Test
     void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties_for_departure_and_arrival() {
-        ApiToken testData = otpApiToken.build();
+        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
 
         Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()
@@ -72,7 +73,7 @@ public class JourneyControllerTest {
 
     @Test
     void test_getJourneysBy_incorrect_apiToken_returns_zero_journeys() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(otpApiToken);
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(testApiToken);
         testData.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
         testData.setDepartureCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
 

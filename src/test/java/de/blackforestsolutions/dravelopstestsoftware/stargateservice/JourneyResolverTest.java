@@ -1,9 +1,10 @@
 package de.blackforestsolutions.dravelopstestsoftware.stargateservice;
 
-import de.blackforestsolutions.dravelopsdatamodel.Journey;
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
+import de.blackforestsolutions.dravelopsdatamodel.Journey;
 import de.blackforestsolutions.dravelopsdatamodel.Point;
 import de.blackforestsolutions.dravelopsdatamodel.util.DravelOpsJsonMapper;
+import de.blackforestsolutions.dravelopstestsoftware.configuration.ApiTokenConfiguration;
 import de.blackforestsolutions.dravelopstestsoftware.configuration.JourneyConfiguration;
 import graphql.kickstart.spring.webclient.boot.GraphQLWebClient;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ import java.util.Map;
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getArrivalAndDepartureLegAssertions;
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getLegPropertiesAssertions;
 
-@Import(JourneyConfiguration.class)
+@Import(value = {ApiTokenConfiguration.class, JourneyConfiguration.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class JourneyResolverTest {
@@ -34,15 +35,16 @@ public class JourneyResolverTest {
     private static final String LANGUAGE_PARAM = "language";
 
     @Autowired
-    private ApiToken.ApiTokenBuilder otpApiToken;
+    private ApiToken testApiToken;
 
     @Autowired
     private WebClient webClient;
 
     @Test
     void test_getJourneysBy_max_parameters_graphql_file_and_apiToken_returns_journeys_with_correct_leg_properties() {
+        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
 
-        Flux<Journey> result = getJourneysBy(otpApiToken.build());
+        Flux<Journey> result = getJourneysBy(testData);
 
         StepVerifier.create(result)
                 .assertNext(getLegPropertiesAssertions())
@@ -52,8 +54,9 @@ public class JourneyResolverTest {
 
     @Test
     void test_getJourneysBy_max_parameters_graphql_file_and_apiToken_returns_journeys_with_correct_leg_properties_for_departure_and_arrival() {
+        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
 
-        Flux<Journey> result = getJourneysBy(otpApiToken.build());
+        Flux<Journey> result = getJourneysBy(testData);
 
         StepVerifier.create(result)
                 .assertNext(getArrivalAndDepartureLegAssertions())
@@ -63,7 +66,7 @@ public class JourneyResolverTest {
 
     @Test
     void test_getJourneysBy_max_parameters_graphql_file_and_incorrect_apiToken_returns_zero_journeys() {
-        ApiToken.ApiTokenBuilder journeyApiToken = new ApiToken.ApiTokenBuilder(this.otpApiToken);
+        ApiToken.ApiTokenBuilder journeyApiToken = new ApiToken.ApiTokenBuilder(testApiToken);
         journeyApiToken.setDepartureCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
         journeyApiToken.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
 
