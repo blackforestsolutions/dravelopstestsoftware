@@ -3,6 +3,7 @@ package de.blackforestsolutions.dravelopstestsoftware.otpmapperservice;
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
 import de.blackforestsolutions.dravelopsdatamodel.Point;
 import de.blackforestsolutions.dravelopsdatamodel.TravelPoint;
+import de.blackforestsolutions.dravelopstestsoftware.configuration.ApiTokenConfiguration;
 import de.blackforestsolutions.dravelopstestsoftware.configuration.TravelPointConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import reactor.test.StepVerifier;
 
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getNearestTravelPointsAssertions;
 
-@Import(TravelPointConfiguration.class)
+@Import(value = {ApiTokenConfiguration.class, TravelPointConfiguration.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @AutoConfigureWebTestClient
@@ -34,11 +35,11 @@ public class TravelPointControllerTest {
     private ExchangeStrategies exchangeStrategies;
 
     @Autowired
-    private ApiToken.ApiTokenBuilder otpApiToken;
+    private ApiToken testApiToken;
 
     @Test
     void test_getNearestStationsBy_correct_apiToken_returns_travelPoints() {
-        ApiToken testData = otpApiToken.build();
+        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
 
         Flux<TravelPoint> result = getNearestStationsBy(testData)
                 .expectStatus()
@@ -54,7 +55,7 @@ public class TravelPointControllerTest {
 
     @Test
     void test_getNearestStationsBy_incorrect_apiToken_returns_zero_travelPoints() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(otpApiToken);
+        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(testApiToken);
         testData.setArrivalCoordinate(new Point.PointBuilder(0.0d, -90.0d).build());
         testData.setRadiusInKilometers(new Distance(1.0d, Metrics.KILOMETERS));
 
