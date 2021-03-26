@@ -40,10 +40,10 @@ public class JourneyControllerTest {
 
     @Test
     void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(testApiToken);
+        ApiToken testData = new ApiToken(testApiToken);
         testData.setDateTime(ZonedDateTime.now().plusDays(1L).withHour(12).withMinute(0).withSecond(0));
 
-        Flux<Journey> result = getJourneysBy(testData.build())
+        Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()
                 .isOk()
                 .returnResult(Journey.class)
@@ -57,7 +57,7 @@ public class JourneyControllerTest {
 
     @Test
     void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties_for_departure_and_arrival() {
-        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
+        ApiToken testData = new ApiToken(testApiToken);
 
         Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()
@@ -73,11 +73,11 @@ public class JourneyControllerTest {
 
     @Test
     void test_getJourneysBy_incorrect_apiToken_returns_zero_journeys() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(testApiToken);
+        ApiToken testData = new ApiToken(testApiToken);
         testData.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
         testData.setDepartureCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
 
-        Flux<Journey> result = getJourneysBy(testData.build())
+        Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()
                 .isOk()
                 .returnResult(Journey.class)

@@ -38,7 +38,7 @@ public class TravelPointResolverTest {
 
     @Test
     void test_getAutocompleteAddressesBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
-        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
+        ApiToken testData = new ApiToken(testApiToken);
 
         Flux<TravelPoint> result = getAutocompleteAddressesBy(testData);
 
@@ -50,10 +50,10 @@ public class TravelPointResolverTest {
 
     @Test
     void test_getAutocompleteAddressesBy_max_parameters_graphql_file_and_incorrect_apiToken_returns_zero_travelPoints() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(testApiToken);
+        ApiToken testData = new ApiToken(testApiToken);
         testData.setDeparture("No TravelPoint is available in pelias for this string");
 
-        Flux<TravelPoint> result = getAutocompleteAddressesBy(testData.build());
+        Flux<TravelPoint> result = getAutocompleteAddressesBy(testData);
 
         StepVerifier.create(result)
                 .expectNextCount(0L)
@@ -62,7 +62,7 @@ public class TravelPointResolverTest {
 
     @Test
     void test_getNearestAddressesBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
-        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
+        ApiToken testData = new ApiToken(testApiToken);
 
         Flux<TravelPoint> result = getNearestAddressesBy(testData);
 
@@ -74,7 +74,7 @@ public class TravelPointResolverTest {
 
     @Test
     void test_getNearestStationsBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
-        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
+        ApiToken testData = new ApiToken(testApiToken);
 
         Flux<TravelPoint> result = getNearestStationsBy(testData);
 

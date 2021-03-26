@@ -36,15 +36,17 @@ public class ApiTokenConfiguration {
 
     @Bean
     public ApiToken testApiToken() {
-        return new ApiToken.ApiTokenBuilder()
-                .setDepartureCoordinate(new Point.PointBuilder(departureLongitude, departureLatitude).build())
-                .setArrivalCoordinate(new Point.PointBuilder(arrivalLongitude, arrivalLatitude).build())
-                .setDateTime(ZonedDateTime.parse(dateTime))
-                .setIsArrivalDateTime(isArrivalDateTime)
-                .setLanguage(language)
-                .setDeparture(text)
-                .setRadiusInKilometers(new Distance(radiusInKilometers, Metrics.KILOMETERS))
-                .build();
+        ApiToken apiToken = new ApiToken();
+
+        apiToken.setDepartureCoordinate(new Point.PointBuilder(departureLongitude, departureLatitude).build());
+        apiToken.setArrivalCoordinate(new Point.PointBuilder(arrivalLongitude, arrivalLatitude).build());
+        apiToken.setDateTime(ZonedDateTime.parse(dateTime));
+        apiToken.setIsArrivalDateTime(isArrivalDateTime);
+        apiToken.setLanguage(language);
+        apiToken.setDeparture(text);
+        apiToken.setRadiusInKilometers(new Distance(radiusInKilometers, Metrics.KILOMETERS));
+
+        return apiToken;
     }
 
 
