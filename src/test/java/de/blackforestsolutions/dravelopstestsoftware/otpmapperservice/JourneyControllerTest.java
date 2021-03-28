@@ -18,8 +18,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.ZonedDateTime;
-
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getArrivalAndDepartureLegAssertions;
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getLegPropertiesAssertions;
 
@@ -41,7 +39,6 @@ public class JourneyControllerTest {
     @Test
     void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties() {
         ApiToken testData = new ApiToken(testApiToken);
-        testData.setDateTime(ZonedDateTime.now().plusDays(1L).withHour(12).withMinute(0).withSecond(0));
 
         Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()
