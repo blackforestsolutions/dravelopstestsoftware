@@ -39,7 +39,7 @@ public class TravelPointControllerTest {
 
     @Test
     void test_getNearestStationsBy_correct_apiToken_returns_travelPoints() {
-        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
+        ApiToken testData = new ApiToken(testApiToken);
 
         Flux<TravelPoint> result = getNearestStationsBy(testData)
                 .expectStatus()
@@ -55,11 +55,11 @@ public class TravelPointControllerTest {
 
     @Test
     void test_getNearestStationsBy_incorrect_apiToken_returns_zero_travelPoints() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(testApiToken);
+        ApiToken testData = new ApiToken(testApiToken);
         testData.setArrivalCoordinate(new Point.PointBuilder(0.0d, -90.0d).build());
         testData.setRadiusInKilometers(new Distance(1.0d, Metrics.KILOMETERS));
 
-        Flux<TravelPoint> result = getNearestStationsBy(testData.build())
+        Flux<TravelPoint> result = getNearestStationsBy(testData)
                 .expectStatus()
                 .isOk()
                 .returnResult(TravelPoint.class)

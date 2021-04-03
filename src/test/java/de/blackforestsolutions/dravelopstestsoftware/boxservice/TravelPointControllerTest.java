@@ -44,7 +44,7 @@ public class TravelPointControllerTest {
 
     @Test
     void test_getAutocompleteAddresses_with_correct_apiToken_returns_travelPoints() {
-        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
+        ApiToken testData = new ApiToken(testApiToken);
 
         Flux<TravelPoint> result = getAutocompleteAddresses(testData)
                 .expectStatus()
@@ -60,10 +60,10 @@ public class TravelPointControllerTest {
 
     @Test
     void test_getAutocompleteAddresses_with_incorrect_apiToken_returns_zero_travelPoints() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(testApiToken);
+        ApiToken testData = new ApiToken(testApiToken);
         testData.setDeparture("No TravelPoint is available in pelias for this string");
 
-        Flux<String> result = getAutocompleteAddresses(testData.build())
+        Flux<String> result = getAutocompleteAddresses(testData)
                 .expectStatus()
                 .isOk()
                 .returnResult(String.class)
@@ -76,7 +76,7 @@ public class TravelPointControllerTest {
 
     @Test
     void test_getNearestAddresses_with_correct_apiToken_returns_travelPoints() {
-        ApiToken testData = new ApiToken.ApiTokenBuilder(testApiToken).build();
+        ApiToken testData = new ApiToken(testApiToken);
 
         Flux<TravelPoint> result = getNearestAddresses(testData)
                 .expectStatus()
@@ -92,11 +92,11 @@ public class TravelPointControllerTest {
 
     @Test
     void test_getNearestAddresses_with_incorrect_apiToken_returns_zero_travelPoints() {
-        ApiToken.ApiTokenBuilder testData = new ApiToken.ApiTokenBuilder(testApiToken);
+        ApiToken testData = new ApiToken(testApiToken);
         testData.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
         testData.setRadiusInKilometers(new Distance(1.0d, Metrics.KILOMETERS));
 
-        Flux<TravelPoint> result = getNearestAddresses(testData.build())
+        Flux<TravelPoint> result = getNearestAddresses(testData)
                 .expectStatus()
                 .isOk()
                 .returnResult(TravelPoint.class)
