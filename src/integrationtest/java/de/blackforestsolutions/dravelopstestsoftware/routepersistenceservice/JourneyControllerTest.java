@@ -1,4 +1,4 @@
-package de.blackforestsolutions.dravelopstestsoftware.otpmapperservice;
+package de.blackforestsolutions.dravelopstestsoftware.routepersistenceservice;
 
 import de.blackforestsolutions.dravelopsdatamodel.ApiToken;
 import de.blackforestsolutions.dravelopsdatamodel.Journey;
@@ -18,8 +18,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getArrivalAndDepartureLegAssertions;
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getLegPropertiesAssertions;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAssertions.getArrivalAndDepartureLegAssertions;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAssertions.getLegPropertiesAssertions;
 
 @Import(value = {ApiTokenConfiguration.class, JourneyConfiguration.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -28,7 +28,7 @@ import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.g
 public class JourneyControllerTest {
 
     @Autowired
-    private String journeyOtpMapperUrl;
+    private String journeyRoutePersistenceUrl;
 
     @Autowired
     private ApiToken testApiToken;
@@ -88,7 +88,7 @@ public class JourneyControllerTest {
     private WebTestClient.ResponseSpec getJourneysBy(ApiToken requestToken) {
         return WebTestClient
                 .bindToServer()
-                .baseUrl(journeyOtpMapperUrl)
+                .baseUrl(journeyRoutePersistenceUrl)
                 .exchangeStrategies(exchangeStrategies)
                 .build()
                 .post()
