@@ -6,6 +6,7 @@ import de.blackforestsolutions.dravelopsdatamodel.GraphQlTab;
 import de.blackforestsolutions.dravelopstestsoftware.service.GraphQlValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
@@ -25,7 +26,7 @@ public class CallStatusController {
     }
 
     @RequestMapping(value = "/execute", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<List<CallStatus<GraphQlTab>>> executeTestsWith(Map<GraphQlTab, ApiToken> testData) {
+    public Mono<List<CallStatus<GraphQlTab>>> executeTestsWith(@RequestBody Map<GraphQlTab, ApiToken> testData) {
         return graphQlValidatorService.executeGraphQlTestsWith(testData)
                 .collectList();
     }

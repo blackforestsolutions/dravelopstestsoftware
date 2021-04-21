@@ -36,7 +36,10 @@ public class TravelPointControllerTest {
     private String nearestAddressesBoxServiceUrl;
 
     @Autowired
-    private ApiToken testApiToken;
+    private ApiToken autocompleteUserRequestApiToken;
+
+    @Autowired
+    private ApiToken nearestAddressesUserRequestApiToken;
 
     @Autowired
     private ExchangeStrategies exchangeStrategies;
@@ -44,7 +47,7 @@ public class TravelPointControllerTest {
 
     @Test
     void test_getAutocompleteAddresses_with_correct_apiToken_returns_travelPoints() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(autocompleteUserRequestApiToken);
 
         Flux<TravelPoint> result = getAutocompleteAddresses(testData)
                 .expectStatus()
@@ -60,7 +63,7 @@ public class TravelPointControllerTest {
 
     @Test
     void test_getAutocompleteAddresses_with_incorrect_apiToken_returns_zero_travelPoints() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(autocompleteUserRequestApiToken);
         testData.setDeparture("No TravelPoint is available in pelias for this string");
 
         Flux<String> result = getAutocompleteAddresses(testData)
@@ -76,7 +79,7 @@ public class TravelPointControllerTest {
 
     @Test
     void test_getNearestAddresses_with_correct_apiToken_returns_travelPoints() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(nearestAddressesUserRequestApiToken);
 
         Flux<TravelPoint> result = getNearestAddresses(testData)
                 .expectStatus()
@@ -92,7 +95,7 @@ public class TravelPointControllerTest {
 
     @Test
     void test_getNearestAddresses_with_incorrect_apiToken_returns_zero_travelPoints() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(nearestAddressesUserRequestApiToken);
         testData.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
         testData.setRadiusInKilometers(new Distance(1.0d, Metrics.KILOMETERS));
 

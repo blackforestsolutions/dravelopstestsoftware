@@ -31,14 +31,14 @@ public class JourneyControllerTest {
     private String journeyRoutePersistenceUrl;
 
     @Autowired
-    private ApiToken testApiToken;
+    private ApiToken journeyUserRequestApiToken;
 
     @Autowired
     private ExchangeStrategies exchangeStrategies;
 
     @Test
     void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(journeyUserRequestApiToken);
 
         Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()
@@ -54,7 +54,7 @@ public class JourneyControllerTest {
 
     @Test
     void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties_for_departure_and_arrival() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(journeyUserRequestApiToken);
 
         Flux<Journey> result = getJourneysBy(testData)
                 .expectStatus()
@@ -70,7 +70,7 @@ public class JourneyControllerTest {
 
     @Test
     void test_getJourneysBy_incorrect_apiToken_returns_zero_journeys() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(journeyUserRequestApiToken);
         testData.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
         testData.setDepartureCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
 

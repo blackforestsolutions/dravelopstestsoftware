@@ -23,14 +23,14 @@ import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAsserti
 public class JourneyResolverTest {
 
     @Autowired
-    private ApiToken testApiToken;
+    private ApiToken journeyUserRequestApiToken;
 
     @Autowired
     private GraphQlCallService classUnderTest;
 
     @Test
     void test_getJourneysBy_max_parameters_graphql_file_and_apiToken_returns_journeys_with_correct_leg_properties() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(journeyUserRequestApiToken);
 
         Flux<Journey> result = classUnderTest.getJourneysBy(testData);
 
@@ -42,7 +42,7 @@ public class JourneyResolverTest {
 
     @Test
     void test_getJourneysBy_max_parameters_graphql_file_and_apiToken_returns_journeys_with_correct_leg_properties_for_departure_and_arrival() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(journeyUserRequestApiToken);
 
         Flux<Journey> result = classUnderTest.getJourneysBy(testData);
 
@@ -54,7 +54,7 @@ public class JourneyResolverTest {
 
     @Test
     void test_getJourneysBy_max_parameters_graphql_file_and_incorrect_apiToken_returns_zero_journeys() {
-        ApiToken journeyApiToken = new ApiToken(testApiToken);
+        ApiToken journeyApiToken = new ApiToken(journeyUserRequestApiToken);
         journeyApiToken.setDepartureCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
         journeyApiToken.setArrivalCoordinate(new Point.PointBuilder(0.0d, 0.0d).build());
 

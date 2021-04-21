@@ -21,14 +21,20 @@ import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAsserti
 public class TravelPointResolverTest {
 
     @Autowired
-    private ApiToken testApiToken;
+    private ApiToken autocompleteUserRequestApiToken;
+
+    @Autowired
+    private ApiToken nearestAddressesUserRequestApiToken;
+
+    @Autowired
+    private ApiToken nearestStationsUserRequestApiToken;
 
     @Autowired
     private GraphQlCallService classUnderTest;
 
     @Test
     void test_getAutocompleteAddressesBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(autocompleteUserRequestApiToken);
 
         Flux<TravelPoint> result = classUnderTest.getAutocompleteAddressesBy(testData);
 
@@ -40,7 +46,7 @@ public class TravelPointResolverTest {
 
     @Test
     void test_getAutocompleteAddressesBy_max_parameters_graphql_file_and_incorrect_apiToken_returns_zero_travelPoints() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(autocompleteUserRequestApiToken);
         testData.setDeparture("No TravelPoint is available in pelias for this string");
 
         Flux<TravelPoint> result = classUnderTest.getAutocompleteAddressesBy(testData);
@@ -52,7 +58,7 @@ public class TravelPointResolverTest {
 
     @Test
     void test_getNearestAddressesBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(nearestAddressesUserRequestApiToken);
 
         Flux<TravelPoint> result = classUnderTest.getNearestAddressesBy(testData);
 
@@ -64,7 +70,7 @@ public class TravelPointResolverTest {
 
     @Test
     void test_getNearestStationsBy_max_parameters_graphql_file_and_apiToken_returns_travelPoints() {
-        ApiToken testData = new ApiToken(testApiToken);
+        ApiToken testData = new ApiToken(nearestStationsUserRequestApiToken);
 
         Flux<TravelPoint> result = classUnderTest.getNearestStationsBy(testData);
 

@@ -32,6 +32,7 @@ class CallStatusControllerTest {
 
         List<CallStatus<GraphQlTab>> result = classUnderTest.executeTestsWith(testData).block();
 
+        assertThat(result).isNotNull();
         assertThat(result.size()).isEqualTo(4);
         assertThat(result.get(0)).isEqualToComparingFieldByField(getSuccessfulJourneyCallStatusTab());
         assertThat(result.get(1)).isEqualToComparingFieldByField(getSuccessfulAddressAutocompletionCallStatusTab());
