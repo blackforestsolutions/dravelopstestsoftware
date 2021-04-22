@@ -21,14 +21,13 @@
         <lombok.version>1.18.8</lombok.version>
         <google.maps.services>0.15.0</google.maps.services>
         <jts.core.version>1.18.0</jts.core.version>
-        <blackforestsolutions.dravelopsdatamodel.version>14.0.1</blackforestsolutions.dravelopsdatamodel.version>
+        <blackforestsolutions.dravelopsdatamodel.version>14.6.0</blackforestsolutions.dravelopsdatamodel.version>
         <graphql.webclient.version>0.3.0</graphql.webclient.version>
         <!-- Maven test Dependencies -->
         <assertj.version>3.9.0</assertj.version>
         <junit.version>5.0.0</junit.version>
         <mockito.version>3.2.0</mockito.version>
         <selenium.version>1.0.1</selenium.version>
-        <blockhound.version>1.0.4.RELEASE</blockhound.version>
         <!-- Maven build plugins -->
         <maven.dockerfile.plugin.version>1.3.7</maven.dockerfile.plugin.version>
         <maven.jacoco.plugin.version>0.8.4</maven.jacoco.plugin.version>
@@ -59,8 +58,16 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -141,12 +148,6 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.projectreactor.tools</groupId>
-            <artifactId>blockhound-junit-platform</artifactId>
-            <version>${blockhound.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

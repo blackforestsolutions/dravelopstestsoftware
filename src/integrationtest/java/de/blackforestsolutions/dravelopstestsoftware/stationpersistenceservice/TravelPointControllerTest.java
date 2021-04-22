@@ -14,7 +14,7 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestUtils.getAllStationsAssertions;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAssertions.getAllStationsAssertions;
 
 @Import(TravelPointConfiguration.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

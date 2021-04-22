@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 import static de.blackforestsolutions.dravelopstestsoftware.configuration.GeocodingConfiguration.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TestUtils {
+public class TestAssertions {
 
     public static Consumer<Journey> getLegPropertiesAssertions() {
         return journey -> {
