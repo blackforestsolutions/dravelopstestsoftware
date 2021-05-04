@@ -70,7 +70,7 @@ class GraphQlValidatorServiceTest {
         verify(graphQlCallService, times(1)).getAutocompleteAddressesBy(autocompleteAddressesArg.capture());
         verify(graphQlCallService, times(1)).getNearestAddressesBy(nearestAddressesArg.capture());
         verify(graphQlCallService, times(1)).getNearestStationsBy(nearestStationsArg.capture());
-        assertThat(journeyApiTokenArg.getValue()).isEqualToComparingFieldByField(testData.get(GraphQlTab.JOURNEY));
+        assertThat(journeyApiTokenArg.getValue()).isEqualToComparingFieldByField(testData.get(GraphQlTab.JOURNEY_QUERY));
         assertThat(autocompleteAddressesArg.getValue()).isEqualToComparingFieldByField(testData.get(GraphQlTab.ADDRESS_AUTOCOMPLETION));
         assertThat(nearestAddressesArg.getValue()).isEqualToComparingFieldByField(testData.get(GraphQlTab.NEAREST_ADDRESSES));
         assertThat(nearestStationsArg.getValue()).isEqualToComparingFieldByField(testData.get(GraphQlTab.NEAREST_STATIONS));
@@ -125,7 +125,7 @@ class GraphQlValidatorServiceTest {
     @Test
     void test_executeGraphQlTestsWith_apiToken_and_removed_journey_tab_returns_zero_callStatus_tabs() {
         Map<GraphQlTab, ApiToken> testData = getTestSoftwareApiTokens();
-        testData.remove(GraphQlTab.JOURNEY);
+        testData.remove(GraphQlTab.JOURNEY_QUERY);
 
         Flux<CallStatus<GraphQlTab>> result = classUnderTest.executeGraphQlTestsWith(testData);
 
@@ -137,7 +137,7 @@ class GraphQlValidatorServiceTest {
     @Test
     void test_executeGraphQlTestsWith_apiToken_and_journey_tab_as_null_returns_zero_callStatus_tabs() {
         Map<GraphQlTab, ApiToken> testData = getTestSoftwareApiTokens();
-        testData.put(GraphQlTab.JOURNEY, null);
+        testData.put(GraphQlTab.JOURNEY_QUERY, null);
 
         Flux<CallStatus<GraphQlTab>> result = classUnderTest.executeGraphQlTestsWith(testData);
 

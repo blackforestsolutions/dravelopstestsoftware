@@ -52,7 +52,7 @@ public class CallStatusControllerTest {
         JavaType callStatusTabType = mapper.getTypeFactory().constructParametricType(CallStatus.class, GraphQlTab.class);
         JavaType callStatusListType = mapper.getTypeFactory().constructCollectionType(List.class, callStatusTabType);
         Map<GraphQlTab, ApiToken> testData = new HashMap<>();
-        testData.put(GraphQlTab.JOURNEY, journeyUserRequestApiToken);
+        testData.put(GraphQlTab.JOURNEY_QUERY, journeyUserRequestApiToken);
         testData.put(GraphQlTab.ADDRESS_AUTOCOMPLETION, autocompleteUserRequestApiToken);
         testData.put(GraphQlTab.NEAREST_ADDRESSES, nearestAddressesUserRequestApiToken);
         testData.put(GraphQlTab.NEAREST_STATIONS, nearestStationsUserRequestApiToken);
@@ -80,7 +80,7 @@ public class CallStatusControllerTest {
         JavaType callStatusTabType = mapper.getTypeFactory().constructParametricType(CallStatus.class, GraphQlTab.class);
         JavaType callStatusListType = mapper.getTypeFactory().constructCollectionType(List.class, callStatusTabType);
         Map<GraphQlTab, ApiToken> testData = new HashMap<>();
-        testData.put(GraphQlTab.JOURNEY, getIncorrectJourneyUserRequestToken());
+        testData.put(GraphQlTab.JOURNEY_QUERY, getIncorrectJourneyUserRequestToken());
         testData.put(GraphQlTab.ADDRESS_AUTOCOMPLETION, getIncorrectAutocompleteUserRequestToken());
         testData.put(GraphQlTab.NEAREST_ADDRESSES, getIncorrectNearestAddressesUserRequestToken());
         testData.put(GraphQlTab.NEAREST_STATIONS, getIncorrectNearestStationsUserRequestToken());

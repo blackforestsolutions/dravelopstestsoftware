@@ -30,12 +30,12 @@ public class GraphQlValidatorServiceImpl implements GraphQlValidatorService {
     @Override
     public Flux<CallStatus<GraphQlTab>> executeGraphQlTestsWith(Map<GraphQlTab, ApiToken> testData) {
         try {
-            Objects.requireNonNull(testData.get(GraphQlTab.JOURNEY), "journeyTabTestData is not allowed to be null");
+            Objects.requireNonNull(testData.get(GraphQlTab.JOURNEY_QUERY), "journeyTabTestData is not allowed to be null");
             Objects.requireNonNull(testData.get(GraphQlTab.ADDRESS_AUTOCOMPLETION), "addressAutocompletionTabTestData is not allowed to be null");
             Objects.requireNonNull(testData.get(GraphQlTab.NEAREST_ADDRESSES), "nearestAddressesTabTestData is not allowed to be null");
             Objects.requireNonNull(testData.get(GraphQlTab.NEAREST_STATIONS), "nearestStationsTabTestData is not allowed to be null");
             return Flux.merge(
-                    executeGraphQlTestWith(testData.get(GraphQlTab.JOURNEY), GraphQlTab.JOURNEY, graphQlCallService::getJourneysBy),
+                    executeGraphQlTestWith(testData.get(GraphQlTab.JOURNEY_QUERY), GraphQlTab.JOURNEY_QUERY, graphQlCallService::getJourneysBy),
                     executeGraphQlTestWith(testData.get(GraphQlTab.ADDRESS_AUTOCOMPLETION), GraphQlTab.ADDRESS_AUTOCOMPLETION, graphQlCallService::getAutocompleteAddressesBy),
                     executeGraphQlTestWith(testData.get(GraphQlTab.NEAREST_ADDRESSES), GraphQlTab.NEAREST_ADDRESSES, graphQlCallService::getNearestAddressesBy),
                     executeGraphQlTestWith(testData.get(GraphQlTab.NEAREST_STATIONS), GraphQlTab.NEAREST_STATIONS, graphQlCallService::getNearestStationsBy)
