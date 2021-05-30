@@ -104,6 +104,9 @@ class GraphQlValidatorServiceTest {
         Flux<CallStatus<GraphQlTab>> result = classUnderTest.executeGraphQlTestsWith(testData);
 
         StepVerifier.create(result)
+                .assertNext(callStatusTab -> assertThat(callStatusTab).isEqualToComparingFieldByField(getFailedJourneyCallStatusTab()))
+                .assertNext(callStatusTab -> assertThat(callStatusTab).isEqualToComparingFieldByField(getFailedAddressAutocompletionCallStatusTab()))
+                .assertNext(callStatusTab -> assertThat(callStatusTab).isEqualToComparingFieldByField(getFailedNearestAddressesCallStatusTab()))
                 .assertNext(callStatusTab -> assertThat(callStatusTab).isEqualToComparingFieldByField(getSuccessfulNearestStationsCallStatusTab()))
                 .verifyComplete();
     }
@@ -118,6 +121,9 @@ class GraphQlValidatorServiceTest {
         Flux<CallStatus<GraphQlTab>> result = classUnderTest.executeGraphQlTestsWith(testData);
 
         StepVerifier.create(result)
+                .assertNext(callStatusTab -> assertThat(callStatusTab).isEqualToComparingFieldByField(getFailedJourneyCallStatusTab()))
+                .assertNext(callStatusTab -> assertThat(callStatusTab).isEqualToComparingFieldByField(getFailedAddressAutocompletionCallStatusTab()))
+                .assertNext(callStatusTab -> assertThat(callStatusTab).isEqualToComparingFieldByField(getFailedNearestAddressesCallStatusTab()))
                 .assertNext(callStatusTab -> assertThat(callStatusTab).isEqualToComparingFieldByField(getSuccessfulNearestStationsCallStatusTab()))
                 .verifyComplete();
     }
