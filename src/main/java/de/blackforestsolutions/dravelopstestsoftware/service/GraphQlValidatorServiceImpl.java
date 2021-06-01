@@ -51,10 +51,11 @@ public class GraphQlValidatorServiceImpl implements GraphQlValidatorService {
                     .flatMapMany(token -> graphqlCallService.apply(testToken))
                     .next()
                     .map(value -> new CallStatus<>(tab, Status.SUCCESS, null))
-                    .switchIfEmpty(Mono.just(new CallStatus<>(tab, Status.FAILED, null)))
-                    .onErrorResume(exceptionHandlerService::handleException);
+                    .onErrorResume(exceptionHandlerService::handleException)
+                    .switchIfEmpty(Mono.just(new CallStatus<>(tab, Status.FAILED, null)));
         } catch (Exception e) {
-            return exceptionHandlerService.handleException(e);
+            exceptionHandlerService.handleException(e);
+            return Mono.just(new CallStatus<>(tab, Status.FAILED, null));
         }
     }
 

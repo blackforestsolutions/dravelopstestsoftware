@@ -61,7 +61,6 @@ public class CallStatusControllerTest {
         List<CallStatus<GraphQlTab>> mappedResult = mapper.readValue(result.getBody(), callStatusListType);
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(result).isNotNull();
         assertThat(mappedResult.size()).isEqualTo(4);
         assertThat(mappedResult).extracting(
                 CallStatus::getStatus,
@@ -89,7 +88,6 @@ public class CallStatusControllerTest {
         List<CallStatus<GraphQlTab>> mappedResult = mapper.readValue(result.getBody(), callStatusListType);
 
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(result).isNotNull();
         assertThat(mappedResult.size()).isEqualTo(4);
         assertThat(mappedResult).extracting(
                 CallStatus::getStatus,
@@ -101,7 +99,6 @@ public class CallStatusControllerTest {
                 Tuple.tuple(getFailedJourneyCallStatusTab().getStatus(), getFailedJourneyCallStatusTab().getCalledObject())
         );
     }
-
 
     private ResponseEntity<String> executeTestsWith(Map<GraphQlTab, ApiToken> testData) throws JsonProcessingException {
         RestTemplate restTemplate = new RestTemplateBuilder().build();
