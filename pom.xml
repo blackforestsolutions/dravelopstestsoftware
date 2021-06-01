@@ -22,7 +22,6 @@
         <google.maps.services>0.15.0</google.maps.services>
         <jts.core.version>1.18.0</jts.core.version>
         <blackforestsolutions.dravelopsdatamodel.version>15.0.0</blackforestsolutions.dravelopsdatamodel.version>
-        <blackforestsolutions.dravelopsgeneratedcontent.version>3.4.4</blackforestsolutions.dravelopsgeneratedcontent.version>
         <graphql.webclient.version>0.3.0</graphql.webclient.version>
         <!-- Maven test Dependencies -->
         <assertj.version>3.9.0</assertj.version>
@@ -109,11 +108,6 @@
             <groupId>de.blackforestsolutions</groupId>
             <artifactId>dravelopsdatamodel</artifactId>
             <version>${blackforestsolutions.dravelopsdatamodel.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>de.blackforestsolutions</groupId>
-            <artifactId>dravelopsgeneratedcontent</artifactId>
-            <version>${blackforestsolutions.dravelopsgeneratedcontent.version}</version>
         </dependency>
         <!-- Test dependencies -->
         <dependency>
