@@ -15,7 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAssertions.getArrivalAndDepartureLegAssertions;
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAssertions.getLegPropertiesAssertions;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAssertions.getGraphQlLegPropertiesAssertions;
 
 @Import(value = {ApiTokenConfiguration.class, JourneyConfiguration.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -35,8 +35,8 @@ public class JourneyResolverTest {
         Flux<Journey> result = classUnderTest.getJourneysBy(testData);
 
         StepVerifier.create(result)
-                .assertNext(getLegPropertiesAssertions())
-                .thenConsumeWhile(journey -> true, getLegPropertiesAssertions())
+                .assertNext(getGraphQlLegPropertiesAssertions())
+                .thenConsumeWhile(journey -> true, getGraphQlLegPropertiesAssertions())
                 .verifyComplete();
     }
 

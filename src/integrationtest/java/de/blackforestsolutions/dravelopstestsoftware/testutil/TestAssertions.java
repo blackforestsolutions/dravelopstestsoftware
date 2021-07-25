@@ -10,12 +10,36 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestAssertions {
 
+    public static Consumer<Journey> getGraphQlLegPropertiesAssertions() {
+        return journey -> {
+            assertThat(journey.getLegs())
+                    .allMatch(leg -> leg.getDelayInMinutes().toMillis() >= 0)
+                    .allMatch(leg -> leg.getDistanceInKilometers().getValue() > 0)
+                    .allMatch(leg -> leg.getVehicleType() != null)
+                    .allMatch(leg -> leg.getWaypoints() != null)
+                    .allMatch(leg -> leg.getWaypoints().stream().allMatch(waypoint -> waypoint.getX() >= MIN_WGS_84_LONGITUDE))
+                    .allMatch(leg -> leg.getWaypoints().stream().allMatch(waypoint -> waypoint.getX() <= MAX_WGS_84_LONGITUDE))
+                    .allMatch(leg -> leg.getWaypoints().stream().allMatch(waypoint -> waypoint.getY() >= MIN_WGS_84_LATITUDE))
+                    .allMatch(leg -> leg.getWaypoints().stream().allMatch(waypoint -> waypoint.getY() <= MAX_WGS_84_LATITUDE))
+                    .allMatch(leg -> leg.getIntermediateStops().size() == 0 || leg.getIntermediateStops().size() > 0)
+                    .allMatch(leg -> leg.getVehicleName() != null)
+                    .allMatch(leg -> leg.getVehicleNumber() != null);
+            assertThat(journey.getLegs())
+                    .first()
+                    .matches(leg -> leg.getDeparture().getArrivalTime() == null);
+            assertThat(journey.getLegs())
+                    .last()
+                    .matches(leg -> leg.getArrival().getDepartureTime() == null);
+        };
+    }
+
     public static Consumer<Journey> getLegPropertiesAssertions() {
         return journey -> {
             assertThat(journey.getLegs())
                     .allMatch(leg -> leg.getDelayInMinutes().toMillis() >= 0)
                     .allMatch(leg -> leg.getDistanceInKilometers().getValue() > 0)
                     .allMatch(leg -> leg.getVehicleType() != null)
+                    .allMatch(leg -> leg.getPolyline().length() > 0)
                     .allMatch(leg -> leg.getWaypoints() != null)
                     .allMatch(leg -> leg.getWaypoints().stream().allMatch(waypoint -> waypoint.getX() >= MIN_WGS_84_LONGITUDE))
                     .allMatch(leg -> leg.getWaypoints().stream().allMatch(waypoint -> waypoint.getX() <= MAX_WGS_84_LONGITUDE))
