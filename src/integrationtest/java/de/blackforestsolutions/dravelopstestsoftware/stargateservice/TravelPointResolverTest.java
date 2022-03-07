@@ -39,8 +39,8 @@ public class TravelPointResolverTest {
         Flux<TravelPoint> result = classUnderTest.getAutocompleteAddressesBy(testData);
 
         StepVerifier.create(result)
-                .assertNext(getAutocompleteAddressesAssertions())
-                .thenConsumeWhile(travelPoint -> true, getAutocompleteAddressesAssertions())
+                .assertNext(getGraphQlAutocompleteAddressesAssertions())
+                .thenConsumeWhile(travelPoint -> true, getGraphQlAutocompleteAddressesAssertions())
                 .verifyComplete();
     }
 
@@ -63,8 +63,8 @@ public class TravelPointResolverTest {
         Flux<TravelPoint> result = classUnderTest.getNearestAddressesBy(testData);
 
         StepVerifier.create(result)
-                .assertNext(getNearestTravelPointsAssertions())
-                .thenConsumeWhile(travelPoint -> true, getNearestTravelPointsAssertions())
+                .assertNext(getGraphQlNearestTravelPointAssertions())
+                .thenConsumeWhile(travelPoint -> true, getGraphQlNearestTravelPointAssertions())
                 .verifyComplete();
     }
 
@@ -75,8 +75,8 @@ public class TravelPointResolverTest {
         Flux<TravelPoint> result = classUnderTest.getNearestStationsBy(testData);
 
         StepVerifier.create(result)
-                .assertNext(getNearestTravelPointsAssertions())
-                .thenConsumeWhile(travelPoint -> true, getNearestTravelPointsAssertions())
+                .assertNext(getGraphQlNearestTravelPointAssertions())
+                .thenConsumeWhile(travelPoint -> true, getGraphQlNearestTravelPointAssertions())
                 .verifyComplete();
     }
 
@@ -86,8 +86,8 @@ public class TravelPointResolverTest {
         Flux<TravelPoint> result = classUnderTest.getAllStations();
 
         StepVerifier.create(result)
-                .assertNext(getAllStationsAssertions())
-                .thenConsumeWhile(travelPoint -> true, getAllStationsAssertions())
+                .assertNext(getGraphQlAllStationsAssertions())
+                .thenConsumeWhile(travelPoint -> true, getGraphQlAllStationsAssertions())
                 .verifyComplete();
     }
 

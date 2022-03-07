@@ -18,8 +18,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAssertions.getArrivalAndDepartureLegAssertions;
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAssertions.getLegPropertiesAssertions;
+import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAssertions.*;
 
 @Import(value = {ApiTokenConfiguration.class, JourneyConfiguration.class})
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -47,24 +46,8 @@ public class JourneyControllerTest {
                 .getResponseBody();
 
         StepVerifier.create(result)
-                .assertNext(getLegPropertiesAssertions())
-                .thenConsumeWhile(journey -> true, getLegPropertiesAssertions())
-                .verifyComplete();
-    }
-
-    @Test
-    void test_getJourneysBy_correct_apiToken_return_journeys_with_correct_leg_properties_for_departure_and_arrival() {
-        ApiToken testData = new ApiToken(journeyUserRequestApiToken);
-
-        Flux<Journey> result = getJourneysBy(testData)
-                .expectStatus()
-                .isOk()
-                .returnResult(Journey.class)
-                .getResponseBody();
-
-        StepVerifier.create(result)
-                .assertNext(getArrivalAndDepartureLegAssertions())
-                .thenConsumeWhile(journey -> true, getArrivalAndDepartureLegAssertions())
+                .assertNext(getOtpMapperServiceLegAssertions())
+                .thenConsumeWhile(journey -> true, getOtpMapperServiceLegAssertions())
                 .verifyComplete();
     }
 

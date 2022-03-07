@@ -21,7 +21,7 @@
         <lombok.version>1.18.8</lombok.version>
         <google.maps.services>0.15.0</google.maps.services>
         <jts.core.version>1.18.0</jts.core.version>
-        <blackforestsolutions.dravelopsdatamodel.version>16.4.6</blackforestsolutions.dravelopsdatamodel.version>
+        <blackforestsolutions.dravelopsdatamodel.version>16.8.1</blackforestsolutions.dravelopsdatamodel.version>
         <graphql.webclient.version>0.3.0</graphql.webclient.version>
         <!-- Maven test Dependencies -->
         <assertj.version>3.9.0</assertj.version>

@@ -14,7 +14,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAssertions.getArrivalAndDepartureLegAssertions;
 import static de.blackforestsolutions.dravelopstestsoftware.testutil.TestAssertions.getGraphQlLegPropertiesAssertions;
 
 @Import(value = {ApiTokenConfiguration.class, JourneyConfiguration.class})
@@ -37,18 +36,6 @@ public class JourneyResolverTest {
         StepVerifier.create(result)
                 .assertNext(getGraphQlLegPropertiesAssertions())
                 .thenConsumeWhile(journey -> true, getGraphQlLegPropertiesAssertions())
-                .verifyComplete();
-    }
-
-    @Test
-    void test_getJourneysBy_max_parameters_graphql_file_and_apiToken_returns_journeys_with_correct_leg_properties_for_departure_and_arrival() {
-        ApiToken testData = new ApiToken(journeyUserRequestApiToken);
-
-        Flux<Journey> result = classUnderTest.getJourneysBy(testData);
-
-        StepVerifier.create(result)
-                .assertNext(getArrivalAndDepartureLegAssertions())
-                .thenConsumeWhile(journey -> true, getArrivalAndDepartureLegAssertions())
                 .verifyComplete();
     }
 
